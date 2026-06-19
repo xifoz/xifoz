@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: xifoz_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-xifoz}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Database password required}
+      POSTGRES_DB: ${POSTGRES_DB:-xifoz}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-xifoz}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - xifoz_net
+
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: xifoz_api
+    restart: unless-stopped
+    env_file:
+      - ./server/.env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-xifoz}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-xifoz}?schema=public
+      NODE_ENV: production
+    ports:
+      - "4000:4000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - xifoz_net
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-https://api.xifoz.com}
+    container_name: xifoz_web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      - xifoz_net
+
+volumes:
+  postgres_data:
+
+networks:
+  xifoz_net:
+    driver: bridge

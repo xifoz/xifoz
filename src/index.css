@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@font-face {
+  font-family: 'Geist';
+  src: url('/fonts/Geist-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/GeistMono-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 48 33% 97%;
+    --foreground: 221 39% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 221 39% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 221 39% 11%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 221 39% 11%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 199 89% 48%;
+    --accent-foreground: 221 39% 11%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 221 83% 53%;
+    --radius: 0.625rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-xifoz-base text-xifoz-text antialiased;
+    font-family: 'Geist', 'Inter', system-ui, sans-serif;
+  }
+
+  ::selection {
+    background-color: rgba(37, 99, 235, 0.15);
+    color: #111827;
+  }
+}
+
+@layer components {
+  .text-gradient {
+    background: linear-gradient(135deg, #2563EB 0%, #38BDF8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .link-underline {
+    position: relative;
+    display: inline-block;
+  }
+
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .link-underline:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+@layer components {
+  .prose-xifoz h2 {
+    @apply text-2xl md:text-3xl font-normal text-xifoz-text tracking-tight mt-12 mb-4;
+  }
+  .prose-xifoz h3 {
+    @apply text-xl font-semibold text-xifoz-text mt-8 mb-3;
+  }
+  .prose-xifoz p {
+    @apply text-base text-xifoz-text-secondary leading-relaxed mb-4;
+  }
+  .prose-xifoz ul {
+    @apply list-none pl-0 mb-6 space-y-2;
+  }
+  .prose-xifoz ul li {
+    @apply flex items-start gap-3;
+  }
+  .prose-xifoz ul li > span:first-child {
+    @apply mt-2 w-1.5 h-1.5 rounded-full bg-xifoz-blue flex-shrink-0;
+  }
+  .prose-xifoz strong {
+    @apply text-xifoz-text font-semibold;
+  }
+  .prose-xifoz code {
+    @apply px-1.5 py-0.5 bg-xifoz-dim rounded text-sm font-mono text-xifoz-blue;
+  }
+}
+
+@layer utilities {
+  .container-xifoz {
+    @apply max-w-content mx-auto px-4 sm:px-6 lg:px-8 xl:px-12;
+  }
+}
