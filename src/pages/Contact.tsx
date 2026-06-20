@@ -137,7 +137,9 @@ function ContactForm() {
 
       setSubmitted(true);
     } catch {
-      setErrors({ general: 'Network error. Please check your connection and try again.' });
+      setErrors({ general: 'We couldn't submit your request at the moment.
+
+Please try again in a few minutes. If the issue persists, contact us directly at support@xifoz.com.' });
     } finally {
       setIsSubmitting(false);
     }
@@ -151,7 +153,9 @@ function ContactForm() {
         </div>
         <h3 className="text-xl font-semibold text-xifoz-text mb-2">Message sent</h3>
         <p className="text-sm text-xifoz-text-secondary">
-          We have received your message and will get back to you within 24 hours.
+          Thank you for contacting XIFOZ.
+
+Your inquiry has been received successfully. Our team will review your request and respond within one business day.
         </p>
       </div>
     );
