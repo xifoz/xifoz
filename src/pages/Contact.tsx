@@ -130,16 +130,18 @@ function ContactForm() {
           }
           setErrors(mapped);
         } else {
-          setErrors({ general: json.message ?? 'Something went wrong. Please try again.' });
+          setErrors({
+  general: "We couldn\x27t submit your request at the moment.\n\nPlease try again in a few minutes. If the issue persists, contact us directly at support\.com.",
+});
         }
         return;
       }
 
       setSubmitted(true);
     } catch {
-      setErrors({ general: 'We couldn't submit your request at the moment.
-
-Please try again in a few minutes. If the issue persists, contact us directly at support@xifoz.com.' });
+      setErrors({
+        general: "We couldn't submit your request at the moment.\n\nPlease try again in a few minutes. If the issue persists, contact us directly at support@xifoz.com.",
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -152,11 +154,7 @@ Please try again in a few minutes. If the issue persists, contact us directly at
           <CheckCircle className="w-8 h-8 text-xifoz-success" />
         </div>
         <h3 className="text-xl font-semibold text-xifoz-text mb-2">Message sent</h3>
-        <p className="text-sm text-xifoz-text-secondary">
-          Thank you for contacting XIFOZ.
-
-Your inquiry has been received successfully. Our team will review your request and respond within one business day.
-        </p>
+        <p className="text-sm text-xifoz-text-secondary whitespace-pre-line">{"Thank you for contacting XIFOZ.\n\nYour inquiry has been received successfully. Our team will review your request and respond within one business day."}</p>
       </div>
     );
   }
