@@ -324,8 +324,8 @@ export default function Contact() {
                     icon: Mail,
                     label: 'Email',
                     content: (
-                      <a href="mailto:hello@xifoz.com" className="text-sm text-xifoz-text-secondary hover:text-xifoz-blue transition-colors">
-                        hello@xifoz.com
+                      <a href="mailto:support@xifoz.com" className="text-sm text-xifoz-text-secondary hover:text-xifoz-blue transition-colors">
+                        support@xifoz.com
                       </a>
                     ),
                   },
@@ -333,8 +333,8 @@ export default function Contact() {
                     icon: Phone,
                     label: 'Phone',
                     content: (
-                      <a href="tel:+911244567890" className="text-sm text-xifoz-text-secondary hover:text-xifoz-blue transition-colors">
-                        +91 124 456 7890
+                      <a href="tel:+917999994828" className="text-sm text-xifoz-text-secondary hover:text-xifoz-blue transition-colors">
+                        +91 7999994828
                       </a>
                     ),
                   },
@@ -343,7 +343,6 @@ export default function Contact() {
                     label: 'Office',
                     content: (
                       <p className="text-sm text-xifoz-text-secondary">
-                        Cyber Hub, DLF Phase 3<br />
                         Gurugram, Haryana 122002<br />
                         India
                       </p>
@@ -354,8 +353,8 @@ export default function Contact() {
                     label: 'Business Hours',
                     content: (
                       <p className="text-sm text-xifoz-text-secondary">
-                        Monday — Friday: 9:00 AM — 6:00 PM IST<br />
-                        24/7 Emergency Response Available
+                        Monday — Friday: 9:00 AM - 6:00 PM IST<br />
+                        24/7 Incident Response Available
                       </p>
                     ),
                   },
