@@ -47,7 +47,7 @@ export function WhyChooseSection() {
               Why XIFOZ
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal text-xifoz-text tracking-tight mb-6">
-              Why organizations trust us with their security
+              Why organizations trust us with their security??
             </h2>
             <p className="text-base md:text-lg text-xifoz-text-secondary leading-relaxed">
               We combine technical expertise with business understanding to deliver security solutions that protect without hindering growth.
