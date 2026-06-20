@@ -72,7 +72,7 @@ export function SystemicResilience() {
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal text-xifoz-text-inverse tracking-tight mb-6">
               Resilience is a system,{' '}
-              <span className="text-xifoz-cyan">not a feature</span>
+              <span className="text-xifoz-cyan">not a feature.</span>
             </h2>
             <p className="text-base md:text-lg text-xifoz-text-inverse/70 leading-relaxed mb-8">
               We architect environments where failure is anticipated, contained, and automatically

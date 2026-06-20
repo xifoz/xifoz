@@ -15,7 +15,7 @@ export function FAQSection() {
               FAQ
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal text-xifoz-text tracking-tight mb-4">
-              Frequently asked questions
+              Frequently Asked Questions.
             </h2>
             <p className="text-base text-xifoz-text-secondary">
               Everything you need to know about our services.

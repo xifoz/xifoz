@@ -24,7 +24,7 @@ export function FrameworksSection() {
             Compliance
           </span>
           <h2 className="text-3xl md:text-4xl font-normal text-xifoz-text tracking-tight mb-4">
-            Aligned with leading security frameworks
+            Aligned with Leading Security Frameworks
           </h2>
           <p className="text-base text-xifoz-text-secondary max-w-xl mx-auto">
             Our services map to all major compliance standards, helping you meet regulatory requirements with confidence.
