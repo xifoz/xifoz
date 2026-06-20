@@ -86,7 +86,7 @@ function AboutHero() {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
-            Protecting the digital future
+            XIFOZ - Your Digital Guardian
           </h1>
           <p
             className={cn(
