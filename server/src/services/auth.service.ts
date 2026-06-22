@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { prisma } from '../config/database.js';
 import { findAdminByEmail, findAdminById, updateAdmin } from '../repositories/admin.repository.js';
-import { createSession, findSession, updateSession, revokeSession, revokeAllSessions } from '../repositories/session.repository.js';
+import { createSession, findSession, revokeSession, revokeAllSessions } from '../repositories/session.repository.js';
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../utils/jwt.js';
 import { comparePassword } from '../utils/password.js';
 import { AppError } from '../middleware/errorHandler.js';
@@ -118,6 +118,7 @@ export async function login(
 
   // Store the session in DB
   await createSession({
+    id: sessionId,
     adminId: admin.id,
     hashedToken,
     userAgent,
@@ -210,21 +211,36 @@ export async function refresh(
     throw new AppError('Admin account is inactive', 401);
   }
 
-  // Refresh Token Rotation: generate a new refresh token and access token
-  const newRefreshToken = signRefreshToken({ sub: session.adminId, sessionId: session.id });
+  // Refresh Token Rotation: revoke the previous session and create a new session atomically
+  const newSessionId = crypto.randomUUID();
+  const newRefreshToken = signRefreshToken({ sub: session.adminId, sessionId: newSessionId });
   const newHashedToken = crypto.createHash('sha256').update(newRefreshToken).digest('hex');
 
-  // Update session in DB with rotated token and slide expiry by 7 days
-  await updateSession(session.id, {
-    hashedToken: newHashedToken,
-    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+  await prisma.$transaction(async (tx) => {
+    // Revoke old session
+    await tx.session.update({
+      where: { id: session.id },
+      data: { revokedAt: new Date() },
+    });
+
+    // Create new session
+    await tx.session.create({
+      data: {
+        id: newSessionId,
+        adminId: session.adminId,
+        hashedToken: newHashedToken,
+        userAgent: session.userAgent,
+        ipAddress,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      },
+    });
   });
 
   const newAccessToken = signAccessToken({
     sub: session.admin.id,
     email: session.admin.email,
     role: session.admin.role,
-    sessionId: session.id,
+    sessionId: newSessionId,
   });
 
   return {

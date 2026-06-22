@@ -10,6 +10,7 @@ export const globalRateLimiter = rateLimit({
     success: false,
     message: 'Too many requests. Please try again later.',
   }),
+  skip: () => process.env.NODE_ENV === 'test',
 });
 
 export const contactRateLimiter = rateLimit({
@@ -22,6 +23,7 @@ export const contactRateLimiter = rateLimit({
     message: 'Too many form submissions. Please wait before trying again.',
   }),
   skipSuccessfulRequests: false,
+  skip: () => process.env.NODE_ENV === 'test',
 });
 
 export const loginRateLimiter = rateLimit({
@@ -33,4 +35,5 @@ export const loginRateLimiter = rateLimit({
     success: false,
     message: 'Too many login attempts. Please try again after 15 minutes.',
   }),
+  skip: () => process.env.NODE_ENV === 'test',
 });

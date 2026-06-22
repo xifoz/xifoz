@@ -21,11 +21,16 @@ async function seed() {
   // Seed default super admin
   await prisma.admin.upsert({
     where: { email: 'admin@xifoz.com' },
-    update: {},
+    update: {
+      hashedPassword: '$2b$12$xHZsBRG9u/m235s6Jr4p0O2xNYLzQndspDaaIa0ni1lJ8scfBcqMK',
+      status: AdminStatus.ACTIVE,
+      failedLoginAttempts: 0,
+      lockedUntil: null,
+    },
     create: {
       name: 'XIFOZ Admin',
       email: 'admin@xifoz.com',
-      hashedPassword: '$2b$12$TCpXEhLS9C6MPDXSBAn7cOTO6JrUpzVO6wqheTNdYjUtBKsLjG5du', // Real bcrypt hash for 'SuperSecurePassword123!'
+      hashedPassword: '$2b$12$xHZsBRG9u/m235s6Jr4p0O2xNYLzQndspDaaIa0ni1lJ8scfBcqMK', // Real bcrypt hash for 'SuperSecurePassword123!'
       role: AdminRole.SUPER_ADMIN,
       status: AdminStatus.ACTIVE,
     },

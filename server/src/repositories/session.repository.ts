@@ -9,6 +9,7 @@ export type SessionWithAdmin = Session & { admin: Admin };
  * @returns The created Session object.
  */
 export async function createSession(data: {
+  id?: string;
   adminId: string;
   hashedToken: string;
   userAgent?: string | null;
@@ -17,6 +18,7 @@ export async function createSession(data: {
 }): Promise<Session> {
   return prisma.session.create({
     data: {
+      id: data.id,
       adminId: data.adminId,
       hashedToken: data.hashedToken,
       userAgent: data.userAgent ?? null,
@@ -79,9 +81,6 @@ export async function revokeAllSessions(adminId: string): Promise<Prisma.BatchPa
     where: {
       adminId,
       revokedAt: null,
-      expiresAt: {
-        gt: new Date(),
-      },
     },
     data: {
       revokedAt: new Date(),
