@@ -75,11 +75,29 @@ model Admin {
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
   auditLogs           AuditLog[]
+  sessions            Session[]
 
   @@index([status])
   @@index([role])
   @@index([deletedAt])
   @@map("admins")
+}
+
+model Session {
+  id          String    @id @default(cuid())
+  hashedToken String    @unique
+  adminId     String
+  admin       Admin     @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  userAgent   String?
+  ipAddress   String?
+  expiresAt   DateTime
+  revokedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([adminId])
+  @@index([expiresAt])
+  @@map("sessions")
 }
 
 model AuditLog {
