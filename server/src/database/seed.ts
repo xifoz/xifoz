@@ -25,7 +25,7 @@ async function seed() {
     create: {
       name: 'XIFOZ Admin',
       email: 'admin@xifoz.com',
-      hashedPassword: '$2b$10$E9A7wO3Y1lFj6e4S8rT.uXFm1H1G2L3M4N5O6P7Q8R9S0T1U2V3W', // Mock hashed password
+      hashedPassword: '$2b$12$TCpXEhLS9C6MPDXSBAn7cOTO6JrUpzVO6wqheTNdYjUtBKsLjG5du', // Real bcrypt hash for 'SuperSecurePassword123!'
       role: AdminRole.SUPER_ADMIN,
       status: AdminStatus.ACTIVE,
     },

@@ -2,11 +2,13 @@ import 'dotenv/config';
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import { config } from './config/index.js';
 import { connectDatabase, disconnectDatabase } from './config/database.js';
 import { globalRateLimiter } from './middleware/rateLimiter.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import contactRoutes from './routes/contact.routes.js';
+import authRoutes from './routes/auth.routes.js';
 import { logger } from './utils/logger.js';
 
 const app = express();
@@ -36,9 +38,12 @@ app.use(
     origin: config.corsOrigin,
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: false,
+    credentials: true,
   })
 );
+
+// Cookie parsing
+app.use(cookieParser());
 
 // Body parsing
 app.use(express.json({ limit: '16kb' }));
@@ -57,6 +62,7 @@ app.get('/api/health', (_req, res) => {
 
 // Routes
 app.use('/api/contact', contactRoutes);
+app.use('/api/auth', authRoutes);
 
 // 404 + error handlers
 app.use(notFoundHandler);
