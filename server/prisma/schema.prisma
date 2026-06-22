@@ -7,17 +7,106 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ContactStatus {
+  NEW
+  IN_PROGRESS
+  RESOLVED
+  ARCHIVED
+  SPAM
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  SECURITY_ADMIN
+  READ_ONLY
+}
+
+enum AdminStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum AuditEvent {
+  LOGIN
+  LOGOUT
+  CREATE
+  UPDATE
+  DELETE
+  SETTINGS_CHANGED
+  CONTACT_UPDATED
+  SYSTEM
+}
+
+enum AuditSeverity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
 model ContactSubmission {
-  id        String   @id @default(cuid())
+  id        String        @id @default(cuid())
   name      String
   email     String
   company   String?
   service   String?
   message   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  status    ContactStatus @default(NEW)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 
   @@index([email])
   @@index([createdAt])
+  @@index([status, createdAt])
   @@map("contact_submissions")
+}
+
+model Admin {
+  id                  String      @id @default(cuid())
+  name                String
+  email               String      @unique
+  hashedPassword      String
+  role                AdminRole   @default(READ_ONLY)
+  status              AdminStatus @default(ACTIVE)
+  lastLoginAt         DateTime?
+  lastLoginIp         String?
+  failedLoginAttempts Int         @default(0)
+  lockedUntil         DateTime?
+  deletedAt           DateTime?
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+  auditLogs           AuditLog[]
+
+  @@index([status])
+  @@index([role])
+  @@index([deletedAt])
+  @@map("admins")
+}
+
+model AuditLog {
+  id        String        @id @default(cuid())
+  event     AuditEvent
+  actorName String?
+  details   String
+  ipAddress String?
+  severity  AuditSeverity @default(INFO)
+  metadata  Json?
+  adminId   String?
+  admin     Admin?        @relation(fields: [adminId], references: [id], onDelete: SetNull)
+  createdAt DateTime      @default(now())
+
+  @@index([createdAt])
+  @@index([event])
+  @@index([severity])
+  @@map("audit_logs")
+}
+
+model SystemSetting {
+  id                   String   @id @default("default")
+  portalTitle          String   @default("XIFOZ Admin Portal")
+  rateLimit            Int      @default(60)
+  sessionTimeout       Int      @default(7)
+  notificationsEnabled Boolean  @default(true)
+  updatedAt            DateTime @updatedAt
+
+  @@map("system_settings")
 }
