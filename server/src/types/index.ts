@@ -41,6 +41,7 @@ export interface AccessTokenPayload {
   sub: string;
   email: string;
   role: 'SUPER_ADMIN' | 'SECURITY_ADMIN' | 'READ_ONLY';
+  sessionId: string;
 }
 
 export interface RefreshTokenPayload {
@@ -48,13 +49,18 @@ export interface RefreshTokenPayload {
   sessionId: string;
 }
 
-import { Admin } from '@prisma/client';
+export interface RequestUser {
+  adminId: string;
+  sessionId: string;
+  email: string;
+  role: 'SUPER_ADMIN' | 'SECURITY_ADMIN' | 'READ_ONLY';
+}
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
-      admin?: Omit<Admin, 'hashedPassword'>;
+      user?: RequestUser;
     }
   }
 }
