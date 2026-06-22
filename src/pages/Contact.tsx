@@ -131,8 +131,8 @@ function ContactForm() {
           setErrors(mapped);
         } else {
           setErrors({
-  general: "We couldn\x27t submit your request at the moment.\n\nPlease try again in a few minutes. If the issue persists, contact us directly at support\.com.",
-});
+            general: "We couldn\x27t submit your request at the moment.\n\nPlease try again in a few minutes. If the issue persists, contact us directly at support.com.",
+          });
         }
         return;
       }
