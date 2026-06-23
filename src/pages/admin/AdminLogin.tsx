@@ -110,7 +110,7 @@ export default function AdminLogin() {
 
       // Normal login: refresh token cookie was set by the API — use refresh() to
       // populate auth context state without re-posting credentials.
-      await refresh();
+      apiClient.setAccessToken(response.data.accessToken);
       navigate('/admin');
     } catch (err) {
       if (err instanceof ApiError) {
