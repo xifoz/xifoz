@@ -3,6 +3,7 @@ import { verifyAccessToken } from '../utils/jwt.js';
 import { prisma } from '../config/database.js';
 import { AdminStatus, AdminRole, AuditEvent, AuditSeverity } from '@prisma/client';
 import type { ApiResponse } from '../types/index.js';
+import { logger } from '../utils/logger.js';
 
 /**
  * Middleware to authenticate requests using a Bearer token.
@@ -27,15 +28,8 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
     } catch (err) {
       const errorObject = err as { name?: string };
       if (errorObject.name === 'TokenExpiredError') {
-        // Log expired access token
-        await prisma.auditLog.create({
-          data: {
-            event: AuditEvent.SYSTEM,
-            severity: AuditSeverity.WARNING,
-            details: 'Access token expired',
-            ipAddress: req.ip || null,
-          },
-        });
+        // Log expired access token to console
+        logger.warn('Access token expired', { ipAddress: req.ip || null });
 
         const response: ApiResponse = {
           success: false,
@@ -46,15 +40,8 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
         return;
       }
 
-      // Log invalid access token attempt
-      await prisma.auditLog.create({
-        data: {
-          event: AuditEvent.SYSTEM,
-          severity: AuditSeverity.WARNING,
-          details: 'Invalid access token verification failed',
-          ipAddress: req.ip || null,
-        },
-      });
+      // Log invalid access token attempt to console
+      logger.warn('Invalid access token verification failed', { ipAddress: req.ip || null });
 
       const response: ApiResponse = {
         success: false,
@@ -79,15 +66,10 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
     }
 
     if (session.revokedAt !== null) {
-      // Log warning audit log for revoked session usage under Event: SYSTEM
-      await prisma.auditLog.create({
-        data: {
-          event: AuditEvent.SYSTEM,
-          severity: AuditSeverity.WARNING,
-          details: `Revoked session access attempted. Session ID: ${session.id}`,
-          ipAddress: req.ip || null,
-          adminId: session.adminId,
-        },
+      // Log warning for revoked session usage to console
+      logger.warn(`Revoked session access attempted. Session ID: ${session.id}`, {
+        ipAddress: req.ip || null,
+        adminId: session.adminId,
       });
 
       const response: ApiResponse = {
@@ -99,15 +81,10 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
     }
 
     if (session.expiresAt < new Date()) {
-      // Log expired session access
-      await prisma.auditLog.create({
-        data: {
-          event: AuditEvent.SYSTEM,
-          severity: AuditSeverity.WARNING,
-          details: `Expired session access attempted. Session ID: ${session.id}`,
-          ipAddress: req.ip || null,
-          adminId: session.adminId,
-        },
+      // Log expired session access to console
+      logger.warn(`Expired session access attempted. Session ID: ${session.id}`, {
+        ipAddress: req.ip || null,
+        adminId: session.adminId,
       });
 
       const response: ApiResponse = {
@@ -143,15 +120,10 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
     }
 
     if (admin.status !== AdminStatus.ACTIVE) {
-      // Log inactive admin access
-      await prisma.auditLog.create({
-        data: {
-          event: AuditEvent.SYSTEM,
-          severity: AuditSeverity.WARNING,
-          details: `Inactive admin account access attempted. Admin ID: ${admin.id}`,
-          ipAddress: req.ip || null,
-          adminId: admin.id,
-        },
+      // Log inactive admin access to console
+      logger.warn(`Inactive admin account access attempted. Admin ID: ${admin.id}`, {
+        ipAddress: req.ip || null,
+        adminId: admin.id,
       });
 
       const response: ApiResponse = {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Search, ShieldAlert } from 'lucide-react';
+import { Search, ShieldAlert, AlertCircle } from 'lucide-react';
+import { apiClient } from '@/lib/api-client';
 
 interface AuditLog {
   id: string;
@@ -12,65 +13,101 @@ interface AuditLog {
   severity: 'Info' | 'Warning' | 'Critical';
 }
 
+interface AuditApiResponse {
+  success: boolean;
+  data: {
+    items: Array<{
+      id: string;
+      event: string;
+      actorName: string | null;
+      details: string;
+      ipAddress: string | null;
+      severity: string;
+      createdAt: string;
+      admin?: {
+        name: string;
+        email: string;
+      } | null;
+    }>;
+    total: number;
+    page: number;
+    limit: number;
+  };
+}
+
 export default function AdminAudit() {
   const [loading, setLoading] = useState(true);
   const [logs, setLogs] = useState<AuditLog[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+  const limit = 10;
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLogs([
-        {
-          id: '1',
-          timestamp: '2026-06-22 17:55:12',
-          action: 'USER_LOGIN',
-          user: 'admin@xifoz.com',
-          details: 'Admin (admin@xifoz.com) logged in successfully from Firefox browser',
-          ipAddress: '127.0.0.1',
-          severity: 'Info',
-        },
-        {
-          id: '2',
-          timestamp: '2026-06-22 17:10:04',
-          action: 'CONTACT_RESOLUTION',
-          user: 'System',
-          details: 'Contact request #24 marked as Resolved automatically by system daemon',
-          ipAddress: '10.0.0.4',
-          severity: 'Info',
-        },
-        {
-          id: '3',
-          timestamp: '2026-06-22 16:50:33',
-          action: 'SETTINGS_UPDATE',
-          user: 'admin@xifoz.com',
-          details: 'Modified Global Rate Limiter settings in UI configuration panel',
-          ipAddress: '192.168.1.42',
-          severity: 'Warning',
-        },
-        {
-          id: '4',
-          timestamp: '2026-06-21 23:15:45',
-          action: 'FAILED_LOGIN',
-          user: 'unknown@xifoz.com',
-          details: 'Failed authentication attempt: Invalid credentials provided',
-          ipAddress: '185.220.101.5',
-          severity: 'Critical',
-        },
-      ]);
-      setLoading(false);
-    }, 600);
+    let active = true;
 
-    return () => clearTimeout(timer);
-  }, []);
+    async function fetchLogs() {
+      try {
+        setLoading(true);
+        setError(null);
 
-  const filteredLogs = logs.filter((log) => {
-    return (
-      log.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      log.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      log.details.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      log.ipAddress.includes(searchTerm)
-    );
-  });
+        const params = new URLSearchParams({
+          page: String(page),
+          limit: String(limit),
+          search: searchTerm,
+        });
+
+        const response = await apiClient.get<AuditApiResponse>(`/api/admin/audit-logs?${params.toString()}`);
+        if (!active) return;
+
+        if (response.success && response.data) {
+          const mapped = response.data.items.map((log) => {
+            const sev = log.severity.toUpperCase();
+            let normSeverity: 'Info' | 'Warning' | 'Critical' = 'Info';
+            if (sev === 'WARNING') normSeverity = 'Warning';
+            if (sev === 'CRITICAL') normSeverity = 'Critical';
+
+            return {
+              id: log.id,
+              timestamp: new Date(log.createdAt).toLocaleString(),
+              action: log.event,
+              user: log.actorName || log.admin?.email || 'System',
+              details: log.details,
+              ipAddress: log.ipAddress || 'N/A',
+              severity: normSeverity,
+            };
+          });
+          setLogs(mapped);
+          setTotal(response.data.total);
+        } else {
+          throw new Error('Failed to retrieve system audit logs');
+        }
+      } catch (err) {
+        if (!active) return;
+        console.error('Error fetching audit logs:', err);
+        setError(err instanceof Error ? err.message : 'Error fetching audit logs');
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    const debounceTimer = setTimeout(() => {
+      fetchLogs();
+    }, 300);
+
+    return () => {
+      active = false;
+      clearTimeout(debounceTimer);
+    };
+  }, [page, searchTerm]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setPage(1);
+  };
 
   return (
     <div className="space-y-6">
@@ -79,6 +116,13 @@ export default function AdminAudit() {
         <p className="text-sm text-xifoz-text-secondary">Immutable trace records of administrator activities and critical backend system updates.</p>
       </div>
 
+      {error && (
+        <div className="flex items-start gap-3 p-4 rounded-lg bg-red-50 border border-red-100 text-xifoz-danger" role="alert">
+          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+          <span className="text-sm font-medium">{error}</span>
+        </div>
+      )}
+
       <div className="flex gap-4">
         <div className="relative flex-1 max-w-md">
           <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-xifoz-text-secondary/40">
@@ -86,9 +130,9 @@ export default function AdminAudit() {
           </span>
           <input
             type="text"
-            placeholder="Search logs by action, user, or IP..."
+            placeholder="Search logs by action, user, details, or IP..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={handleSearchChange}
             className="w-full pl-9 pr-4 py-2 bg-xifoz-surface border border-xifoz-dim rounded-lg text-sm text-xifoz-text placeholder:text-xifoz-text-secondary/30 focus:outline-none focus:border-xifoz-blue/30 transition-colors"
           />
         </div>
@@ -130,10 +174,10 @@ export default function AdminAudit() {
                     </td>
                   </tr>
                 ))
-              ) : filteredLogs.length > 0 ? (
-                filteredLogs.map((log) => (
+              ) : logs.length > 0 ? (
+                logs.map((log) => (
                   <tr key={log.id} className="hover:bg-xifoz-base/30 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap text-xs text-xifoz-text-secondary flex items-center gap-1.5">
+                    <td className="px-6 py-4 whitespace-nowrap text-xs text-xifoz-text-secondary">
                       <span>{log.timestamp}</span>
                     </td>
                     <td className="px-6 py-4">
@@ -170,6 +214,29 @@ export default function AdminAudit() {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination controls */}
+        {total > limit && (
+          <div className="px-6 py-4 bg-xifoz-dim border-t border-xifoz-dim flex items-center justify-between">
+            <button
+              onClick={() => setPage((p) => Math.max(p - 1, 1))}
+              disabled={page === 1}
+              className="px-3 py-1.5 bg-xifoz-surface border border-xifoz-dim rounded text-xs text-xifoz-text font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-xifoz-dim/20 transition-colors"
+            >
+              Previous
+            </button>
+            <span className="text-xs text-xifoz-text-secondary">
+              Page {page} of {Math.ceil(total / limit) || 1} ({total} total)
+            </span>
+            <button
+              onClick={() => setPage((p) => (p * limit < total ? p + 1 : p))}
+              disabled={page * limit >= total}
+              className="px-3 py-1.5 bg-xifoz-surface border border-xifoz-dim rounded text-xs text-xifoz-text font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-xifoz-dim/20 transition-colors"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,9 +1,18 @@
+import 'dotenv/config';
 import { PrismaClient, ContactStatus, AdminRole, AdminStatus } from '@prisma/client';
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 async function seed() {
   console.log('Seeding database...');
+
+  const initialPassword = process.env['INITIAL_ADMIN_PASSWORD'];
+  if (!initialPassword || initialPassword.trim() === '') {
+    throw new Error('INITIAL_ADMIN_PASSWORD environment variable is required to run database seeding.');
+  }
+
+  const hashedPassword = await bcrypt.hash(initialPassword.trim(), 12);
 
   // Seed settings singleton
   await prisma.systemSetting.upsert({
@@ -22,7 +31,7 @@ async function seed() {
   await prisma.admin.upsert({
     where: { email: 'admin@xifoz.com' },
     update: {
-      hashedPassword: '$2b$12$xHZsBRG9u/m235s6Jr4p0O2xNYLzQndspDaaIa0ni1lJ8scfBcqMK',
+      hashedPassword,
       status: AdminStatus.ACTIVE,
       failedLoginAttempts: 0,
       lockedUntil: null,
@@ -30,7 +39,7 @@ async function seed() {
     create: {
       name: 'XIFOZ Admin',
       email: 'admin@xifoz.com',
-      hashedPassword: '$2b$12$xHZsBRG9u/m235s6Jr4p0O2xNYLzQndspDaaIa0ni1lJ8scfBcqMK', // Real bcrypt hash for 'SuperSecurePassword123!'
+      hashedPassword,
       role: AdminRole.SUPER_ADMIN,
       status: AdminStatus.ACTIVE,
     },

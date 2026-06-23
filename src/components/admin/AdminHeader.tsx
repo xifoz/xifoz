@@ -8,7 +8,7 @@ interface AdminHeaderProps {
 }
 
 export function AdminHeader({ onMenuClick }: AdminHeaderProps) {
-  const { admin, logout } = useAuth();
+  const { user: admin, logout } = useAuth();
   const location = useLocation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);

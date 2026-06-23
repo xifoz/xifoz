@@ -35,6 +35,16 @@ enum AuditEvent {
   SETTINGS_CHANGED
   CONTACT_UPDATED
   SYSTEM
+  MFA_ENABLED
+  MFA_DISABLED
+  MFA_QR_GENERATED
+  MFA_VERIFY_SUCCESS
+  MFA_VERIFY_FAILED
+  MFA_BACKUP_CODE_USED
+  MFA_BACKUP_REGENERATED
+  MFA_CHALLENGE_INVALID
+  MFA_CHALLENGE_EXPIRED
+  MFA_FAILURE_LOCKOUT
 }
 
 enum AuditSeverity {
@@ -61,21 +71,35 @@ model ContactSubmission {
 }
 
 model Admin {
-  id                  String      @id @default(cuid())
+  id                  String          @id @default(cuid())
   name                String
-  email               String      @unique
+  email               String          @unique
   hashedPassword      String
-  role                AdminRole   @default(READ_ONLY)
-  status              AdminStatus @default(ACTIVE)
+  role                AdminRole       @default(READ_ONLY)
+  status              AdminStatus     @default(ACTIVE)
   lastLoginAt         DateTime?
   lastLoginIp         String?
-  failedLoginAttempts Int         @default(0)
+  failedLoginAttempts Int             @default(0)
   lockedUntil         DateTime?
   deletedAt           DateTime?
-  createdAt           DateTime    @default(now())
-  updatedAt           DateTime    @updatedAt
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
   auditLogs           AuditLog[]
   sessions            Session[]
+  mfaChallenges       MfaChallenge[]
+  trustedDevices      TrustedDevice[]
+
+  // MFA Fields
+  twoFactorEnabled    Boolean   @default(false)
+  twoFactorSecret     String?   // Encrypted secret
+  twoFactorIv         String?   // Encryption IV
+  twoFactorTag        String?   // Encryption Authentication Tag
+  
+  tempTwoFactorSecret String?   // Temporary encrypted secret during setup
+  tempTwoFactorIv     String?   // Temporary setup IV
+  tempTwoFactorTag    String?   // Temporary setup tag
+
+  backupCodes         BackupCode[]
 
   @@index([status])
   @@index([role])
@@ -98,6 +122,48 @@ model Session {
   @@index([adminId])
   @@index([expiresAt])
   @@map("sessions")
+}
+
+model MfaChallenge {
+  id          String   @id @default(cuid())
+  hashedToken String   @unique // SHA-256 hash of the 256-bit challenge token
+  adminId     String
+  admin       Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+
+  @@index([expiresAt])
+  @@index([adminId])
+  @@map("mfa_challenges")
+}
+
+model TrustedDevice {
+  id                String    @id @default(cuid())
+  hashedDeviceToken String    @unique // SHA-256 hash of the 256-bit device token
+  adminId           String
+  admin             Admin     @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  deviceName        String?
+  userAgent         String?
+  ipAddress         String?
+  expiresAt         DateTime
+  revokedAt         DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([adminId])
+  @@index([expiresAt])
+  @@map("trusted_devices")
+}
+
+model BackupCode {
+  id          String   @id @default(cuid())
+  hashedCode  String   @unique // SHA-256 hash of the recovery code
+  adminId     String
+  admin       Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@index([adminId])
+  @@map("backup_codes")
 }
 
 model AuditLog {

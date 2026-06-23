@@ -47,16 +47,18 @@ interface AdminSidebarProps {
 }
 
 export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   const menuItems = [
-    { to: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
-    { to: '/admin/contacts', icon: Mail, label: 'Contacts' },
-    { to: '/admin/users', icon: Shield, label: 'Administrators' },
-    { to: '/admin/audit', icon: ClipboardList, label: 'Audit Logs' },
-    { to: '/admin/profile', icon: User, label: 'Profile' },
-    { to: '/admin/settings', icon: Settings, label: 'Settings' },
+    { to: '/admin', icon: LayoutDashboard, label: 'Dashboard', roles: ['SUPER_ADMIN', 'SECURITY_ADMIN', 'READ_ONLY'] },
+    { to: '/admin/contacts', icon: Mail, label: 'Contacts', roles: ['SUPER_ADMIN', 'SECURITY_ADMIN', 'READ_ONLY'] },
+    { to: '/admin/users', icon: Shield, label: 'Administrators', roles: ['SUPER_ADMIN'] },
+    { to: '/admin/audit', icon: ClipboardList, label: 'Audit Logs', roles: ['SUPER_ADMIN', 'SECURITY_ADMIN', 'READ_ONLY'] },
+    { to: '/admin/profile', icon: User, label: 'Profile', roles: ['SUPER_ADMIN', 'SECURITY_ADMIN', 'READ_ONLY'] },
+    { to: '/admin/settings', icon: Settings, label: 'Settings', roles: ['SUPER_ADMIN'] },
   ];
+
+  const visibleItems = menuItems.filter((item) => item.roles.includes(user?.role || ''));
 
   return (
     <>
@@ -96,7 +98,7 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
 
         {/* Navigation Menu */}
         <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-          {menuItems.map((item) => (
+          {visibleItems.map((item) => (
             <SidebarItem 
               key={item.to} 
               to={item.to} 

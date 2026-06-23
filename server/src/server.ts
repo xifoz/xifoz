@@ -9,7 +9,9 @@ import { globalRateLimiter } from './middleware/rateLimiter.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import contactRoutes from './routes/contact.routes.js';
 import authRoutes from './routes/auth.routes.js';
+import adminRoutes from './routes/admin.routes.js';
 import { logger } from './utils/logger.js';
+import { cleanupExpiredSessions } from './repositories/session.repository.js';
 
 const app = express();
 
@@ -36,7 +38,7 @@ app.use(
 app.use(
   cors({
     origin: config.corsOrigin,
-    methods: ['GET', 'POST', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   })
@@ -63,6 +65,7 @@ app.get('/api/health', (_req, res) => {
 // Routes
 app.use('/api/contact', contactRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
 
 // 404 + error handlers
 app.use(notFoundHandler);
@@ -71,12 +74,37 @@ app.use(errorHandler);
 async function start() {
   await connectDatabase();
 
+  // Run database session cleanup on startup
+  cleanupExpiredSessions()
+    .then((result) => {
+      if (result.count > 0) {
+        logger.info(`Startup session cleanup completed: removed ${result.count} expired/revoked sessions`);
+      }
+    })
+    .catch((err) => {
+      logger.error('Startup session cleanup failed', { error: err });
+    });
+
+  // Schedule session cleanup to run daily (every 24 hours)
+  const cleanupInterval = setInterval(() => {
+    cleanupExpiredSessions()
+      .then((result) => {
+        if (result.count > 0) {
+          logger.info(`Scheduled session cleanup completed: removed ${result.count} expired/revoked sessions`);
+        }
+      })
+      .catch((err) => {
+        logger.error('Scheduled session cleanup failed', { error: err });
+      });
+  }, 24 * 60 * 60 * 1000);
+
   const server = app.listen(config.port, () => {
     logger.info(`XIFOZ API running on port ${config.port} [${config.nodeEnv}]`);
   });
 
   const shutdown = async (signal: string) => {
     logger.info(`${signal} received. Shutting down gracefully...`);
+    clearInterval(cleanupInterval);
     server.close(async () => {
       await disconnectDatabase();
       process.exit(0);

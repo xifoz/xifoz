@@ -19,6 +19,7 @@ export interface AppConfig {
   databaseUrl: string;
   corsOrigin: string;
   bcryptRounds: number;
+  mfaEncryptionKey: string;
   jwt: {
     accessSecret: string;
     refreshSecret: string;

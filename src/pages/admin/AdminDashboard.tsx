@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Mail, Shield, CheckCircle, Clock, ArrowRight } from 'lucide-react';
+import { Mail, Shield, CheckCircle, Clock, ArrowRight, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
+import { apiClient } from '@/lib/api-client';
 
 interface ActivityItem {
   id: string;
@@ -11,8 +12,40 @@ interface ActivityItem {
   status?: string;
 }
 
+interface DashboardResponse {
+  success: boolean;
+  data: {
+    metrics: {
+      totalContacts: number;
+      openRequests: number;
+      closedRequests: number;
+      administrators: number;
+    };
+    recentContacts: Array<{
+      id: string;
+      name: string;
+      email: string;
+      company: string | null;
+      service: string | null;
+      message: string;
+      status: string;
+      createdAt: string;
+    }>;
+    recentAuditLogs: Array<{
+      id: string;
+      event: string;
+      actorName: string | null;
+      details: string;
+      ipAddress: string | null;
+      severity: string;
+      createdAt: string;
+    }>;
+  };
+}
+
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [metrics, setMetrics] = useState({
     totalContacts: 0,
     openRequests: 0,
@@ -22,53 +55,58 @@ export default function AdminDashboard() {
   const [activities, setActivities] = useState<ActivityItem[]>([]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setMetrics({
-        totalContacts: 48,
-        openRequests: 12,
-        closedRequests: 36,
-        administrators: 3,
-      });
+    let active = true;
 
-      setActivities([
-        {
-          id: '1',
-          type: 'contact',
-          message: 'New contact submission from John Doe (Penetration Testing)',
-          timestamp: '10 mins ago',
-          status: 'Open',
-        },
-        {
-          id: '2',
-          type: 'audit',
-          message: 'Admin (admin@xifoz.com) logged in successfully',
-          timestamp: '45 mins ago',
-        },
-        {
-          id: '3',
-          type: 'contact',
-          message: 'Contact request #24 marked as Resolved by System',
-          timestamp: '2 hours ago',
-          status: 'Closed',
-        },
-        {
-          id: '4',
-          type: 'contact',
-          message: 'New contact submission from Sarah Connor (Incident Response)',
-          timestamp: '4 hours ago',
-          status: 'Open',
-        },
-        {
-          id: '5',
-          type: 'audit',
-          message: 'System configuration updated: API rate limiter settings modified',
-          timestamp: '1 day ago',
-        },
-      ]);
-      setLoading(false);
-    }, 600);
+    async function fetchDashboard() {
+      try {
+        setError(null);
+        const res = await apiClient.get<DashboardResponse>('/api/admin/dashboard');
+        if (!active) return;
 
-    return () => clearTimeout(timer);
+        if (res.success && res.data) {
+          setMetrics(res.data.metrics);
+
+          const mappedContacts = (res.data.recentContacts || []).map((c) => ({
+            id: `contact-${c.id}`,
+            type: 'contact' as const,
+            message: `New contact submission from ${c.name} (${c.service || 'General Inquiry'})`,
+            timestamp: new Date(c.createdAt).toLocaleString(),
+            status: ['NEW', 'IN_PROGRESS'].includes(c.status) ? 'Open' : 'Closed',
+            rawDate: new Date(c.createdAt),
+          }));
+
+          const mappedAudits = (res.data.recentAuditLogs || []).map((a) => ({
+            id: `audit-${a.id}`,
+            type: 'audit' as const,
+            message: a.details,
+            timestamp: new Date(a.createdAt).toLocaleString(),
+            rawDate: new Date(a.createdAt),
+          }));
+
+          const sortedActivities = [...mappedContacts, ...mappedAudits]
+            .sort((a, b) => b.rawDate.getTime() - a.rawDate.getTime())
+            .slice(0, 5);
+
+          setActivities(sortedActivities);
+        } else {
+          throw new Error('Failed to retrieve dashboard stats');
+        }
+      } catch (err) {
+        if (!active) return;
+        console.error('Error fetching dashboard:', err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch dashboard data');
+      } finally {
+        if (active) {
+          setLoading(false);
+        }
+      }
+    }
+
+    fetchDashboard();
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   return (
@@ -77,6 +115,13 @@ export default function AdminDashboard() {
         <h2 className="text-xl font-normal text-xifoz-text tracking-tight">System Status Overview</h2>
         <p className="text-sm text-xifoz-text-secondary">Real-time indicators of client contacts and administration audits.</p>
       </div>
+
+      {error && (
+        <div className="flex items-start gap-3 p-4 rounded-lg bg-red-50 border border-red-100 text-xifoz-danger" role="alert">
+          <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+          <span className="text-sm font-medium">{error}</span>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-xifoz-surface border border-xifoz-dim rounded-card p-6 shadow-sm">

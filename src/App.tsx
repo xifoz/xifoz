@@ -4,7 +4,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { AuthProvider } from '@/context/AuthContext';
 import { AdminProtectedRoute } from '@/components/AdminProtectedRoute';
-import { AdminLayout } from '@/components/admin/AdminLayout';
+import { Toaster } from 'sonner';
 
 // Public pages
 const Home = lazy(() => import('@/pages/Home'));
@@ -19,6 +19,7 @@ const Terms = lazy(() => import('@/pages/Terms'));
 const NotFound = lazy(() => import('@/pages/NotFound'));
 
 // Admin pages
+const AdminLayout = lazy(() => import('@/components/admin/AdminLayout').then(m => ({ default: m.AdminLayout })));
 const AdminLogin = lazy(() => import('@/pages/admin/AdminLogin'));
 const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'));
 const AdminContacts = lazy(() => import('@/pages/admin/AdminContacts'));
@@ -43,6 +44,7 @@ export default function App() {
   return (
     <AuthProvider>
       <div className="min-h-screen bg-xifoz-base flex flex-col">
+        <Toaster position="top-right" richColors closeButton />
         <ScrollToTop />
         {!isAdminRoute && <Navbar />}
         <main id="main-content" className="flex-grow">
@@ -71,10 +73,24 @@ export default function App() {
               >
                 <Route index element={<AdminDashboard />} />
                 <Route path="contacts" element={<AdminContacts />} />
-                <Route path="users" element={<AdminUsers />} />
+                <Route
+                  path="users"
+                  element={
+                    <AdminProtectedRoute allowedRoles={['SUPER_ADMIN']}>
+                      <AdminUsers />
+                    </AdminProtectedRoute>
+                  }
+                />
                 <Route path="audit" element={<AdminAudit />} />
                 <Route path="profile" element={<AdminProfile />} />
-                <Route path="settings" element={<AdminSettings />} />
+                <Route
+                  path="settings"
+                  element={
+                    <AdminProtectedRoute allowedRoles={['SUPER_ADMIN']}>
+                      <AdminSettings />
+                    </AdminProtectedRoute>
+                  }
+                />
                 <Route path="*" element={<AdminNotFound />} />
               </Route>
 

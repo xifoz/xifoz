@@ -17,6 +17,7 @@ function validateConfig(): AppConfig {
     'JWT_ACCESS_SECRET',
     'JWT_REFRESH_SECRET',
     'COOKIE_NAME',
+    'MFA_ENCRYPTION_KEY',
   ];
   for (const key of required) {
     if (!process.env[key]) missing.push(key);
@@ -37,6 +38,7 @@ function validateConfig(): AppConfig {
     databaseUrl: requireEnv('DATABASE_URL'),
     corsOrigin: requireEnv('CORS_ORIGIN'),
     bcryptRounds: parseInt(process.env['BCRYPT_ROUNDS'] ?? '12', 10),
+    mfaEncryptionKey: requireEnv('MFA_ENCRYPTION_KEY'),
     jwt: {
       accessSecret: requireEnv('JWT_ACCESS_SECRET'),
       refreshSecret: requireEnv('JWT_REFRESH_SECRET'),
