@@ -1,29 +1,32 @@
-# ── Stage 1: Build ──────────────────────────────────────────────
-FROM node:22-alpine AS builder
+# ---------- Build ----------
+FROM node:22-bookworm-slim AS builder
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci --ignore-scripts
+COPY package*.json ./
+
+RUN npm ci
 
 COPY prisma ./prisma
+
 RUN npx prisma generate
 
 COPY . .
+
 RUN npm run build
 
-# ── Stage 2: Production runtime ──────────────────────────────────
-FROM node:22-alpine AS runner
-
-ENV NODE_ENV=production
+# ---------- Runtime ----------
+FROM node:22-bookworm-slim
 
 WORKDIR /app
 
-COPY --from=builder /app/package.json ./
+ENV NODE_ENV=production
+
+COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/dist ./dist
 
-EXPOSE 4000
+EXPOSE 8080
 
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/server.js"]
+CMD ["sh","-c","npx prisma migrate deploy && node dist/server.js"]
