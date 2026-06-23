@@ -1,5 +1,4 @@
 import crypto from 'crypto';
-import jwt from 'jsonwebtoken';
 import { prisma } from '../config/database.js';
 import { findAdminByEmail, findAdminById, updateAdmin } from '../repositories/admin.repository.js';
 import { createSession, findSession, revokeSession, revokeAllSessions } from '../repositories/session.repository.js';
@@ -206,12 +205,6 @@ export async function login(
   // Hash the refresh token using SHA-256 for secure DB storage
   const hashedToken = hashSHA256(refreshToken);
 
-  const decoded = jwt.decode(refreshToken, { complete: true }) as { header: unknown; payload: unknown } | null;
-  console.log(`[AUTH_DIAG] Generated Refresh Token: ${refreshToken.substring(0, 25)}`);
-  console.log(`[AUTH_DIAG] JWT Header: ${JSON.stringify(decoded?.header)}`);
-  console.log(`[AUTH_DIAG] JWT Payload: ${JSON.stringify(decoded?.payload)}`);
-  console.log(`[AUTH_DIAG] Hashed Token stored in DB: ${hashedToken}`);
-
   // Store the session in DB
   await createSession({
     id: sessionId,
@@ -393,12 +386,6 @@ export async function loginVerify2FA(
         sessionId,
       });
       const hashedSessionToken = hashSHA256(refreshToken);
-
-      const decoded = jwt.decode(refreshToken, { complete: true }) as { header: unknown; payload: unknown } | null;
-      console.log(`[AUTH_DIAG] Generated Refresh Token: ${refreshToken.substring(0, 25)}`);
-      console.log(`[AUTH_DIAG] JWT Header: ${JSON.stringify(decoded?.header)}`);
-      console.log(`[AUTH_DIAG] JWT Payload: ${JSON.stringify(decoded?.payload)}`);
-      console.log(`[AUTH_DIAG] Hashed Token stored in DB: ${hashedSessionToken}`);
 
       // Session registration
       await tx.session.create({
@@ -771,27 +758,14 @@ export async function refresh(
   ipAddress: string | null,
   _userAgent: string | null
 ): Promise<AuthResponse> {
-  console.log(`[AUTH_DIAG] Cookie Token Received: ${token.substring(0, 25)}`);
-  const decoded = jwt.decode(token, { complete: true }) as { header: unknown; payload: unknown } | null;
-  console.log(`[AUTH_DIAG] JWT Header: ${JSON.stringify(decoded?.header)}`);
-  console.log(`[AUTH_DIAG] JWT Payload: ${JSON.stringify(decoded?.payload)}`);
-
   try {
     verifyRefreshToken(token);
-    console.log(`[AUTH_DIAG] jwt.verify() did NOT throw`);
-  } catch (error) {
-    const err = error as Error;
-    console.log(`[AUTH_DIAG] jwt.verify() threw: ${err?.name || 'UnknownError'} - ${err?.message || ''}`);
-    console.log(`[AUTH_DIAG] jwt.verify() Error Class: ${err?.constructor?.name || 'Error'}`);
-    console.log(`[AUTH_DIAG] jwt.verify() Error Message: ${err?.message || ''}`);
+  } catch {
     throw new AppError('Invalid token', 401);
   }
 
-  const computedHash = crypto.createHash('sha256').update(token).digest('hex');
-  console.log(`[AUTH_DIAG] SHA-256 Hash computed: ${computedHash}`);
-
-  const session = await findSession(computedHash);
-  console.log(`[AUTH_DIAG] Matching Session exists: ${!!session}`);
+  const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+  const session = await findSession(hashedToken);
 
   // If session is not found in database:
   if (!session) {
