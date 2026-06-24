@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Search, Mail, AlertCircle, Trash2, RotateCcw, FileText, X, ChevronDown } from 'lucide-react';
 import { apiClient } from '@/lib/api-client';
@@ -96,17 +97,44 @@ interface StatusDropdownProps {
 
 function StatusDropdown({ contactId, currentStatus, disabled, onUpdate }: StatusDropdownProps) {
   const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const [menuStyle, setMenuStyle] = useState<React.CSSProperties>({});
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Position the portal menu below the trigger button
+  const openMenu = () => {
+    if (!btnRef.current) return;
+    const rect = btnRef.current.getBoundingClientRect();
+    setMenuStyle({
+      position: 'fixed',
+      top: rect.bottom + 4,
+      left: rect.left,
+      minWidth: Math.max(rect.width, 130),
+      zIndex: 9999,
+    });
+    setOpen(true);
+  };
 
   useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
+    if (!open) return;
+    function handleClose(e: MouseEvent) {
+      if (
+        menuRef.current && !menuRef.current.contains(e.target as Node) &&
+        btnRef.current && !btnRef.current.contains(e.target as Node)
+      ) {
         setOpen(false);
       }
     }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    function handleScroll() { setOpen(false); }
+    document.addEventListener('mousedown', handleClose);
+    window.addEventListener('scroll', handleScroll, true);
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      document.removeEventListener('mousedown', handleClose);
+      window.removeEventListener('scroll', handleScroll, true);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, [open]);
 
   if (disabled) {
     return <StatusBadge status={currentStatus} />;
@@ -115,18 +143,23 @@ function StatusDropdown({ contactId, currentStatus, disabled, onUpdate }: Status
   const cfg = STATUS_CONFIG[currentStatus];
 
   return (
-    <div ref={ref} className="relative inline-block">
+    <>
       <button
+        ref={btnRef}
         id={`status-btn-${contactId}`}
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => (open ? setOpen(false) : openMenu())}
         className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-badge text-xs font-semibold border cursor-pointer hover:opacity-80 transition-opacity ${cfg.className}`}
         title="Click to change status"
       >
         {cfg.label}
         <ChevronDown className="w-3 h-3 opacity-60" />
       </button>
-      {open && (
-        <div className="absolute z-20 mt-1 left-0 min-w-[130px] bg-xifoz-surface border border-xifoz-dim rounded-lg shadow-lg py-1">
+      {open && createPortal(
+        <div
+          ref={menuRef}
+          style={menuStyle}
+          className="bg-xifoz-surface border border-xifoz-dim rounded-lg shadow-xl py-1"
+        >
           {ALL_STATUSES.map((s) => (
             <button
               key={s}
@@ -142,9 +175,10 @@ function StatusDropdown({ contactId, currentStatus, disabled, onUpdate }: Status
               <StatusBadge status={s} />
             </button>
           ))}
-        </div>
+        </div>,
+        document.body
       )}
-    </div>
+    </>
   );
 }
 
