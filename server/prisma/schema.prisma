@@ -61,13 +61,18 @@ model ContactSubmission {
   company   String?
   service   String?
   message   String
-  status    ContactStatus @default(NEW)
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  status        ContactStatus @default(NEW)
+  internalNotes String?
+  isDeleted     Boolean       @default(false)
+  deletedAt     DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
   @@index([email])
   @@index([createdAt])
   @@index([status, createdAt])
+  @@index([isDeleted])
+  @@index([deletedAt])
   @@map("contact_submissions")
 }
 

@@ -12,6 +12,7 @@ import authRoutes from './routes/auth.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import { logger } from './utils/logger.js';
 import { cleanupExpiredSessions } from './repositories/session.repository.js';
+import { cleanupDeletedContacts } from './services/cleanup.service.js';
 
 const app = express();
 
@@ -94,6 +95,12 @@ async function start() {
     })
     .catch((err) => {
       logger.error('Startup session cleanup failed', { error: err });
+    });
+
+  // Run deleted-contact purge on startup (records soft-deleted > 10 days ago)
+  cleanupDeletedContacts()
+    .catch((err) => {
+      logger.error('Startup contact cleanup failed', { error: err });
     });
 
   // Schedule session cleanup to run daily (every 24 hours)

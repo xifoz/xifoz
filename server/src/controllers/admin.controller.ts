@@ -8,14 +8,18 @@ import { updateSettingsSchema } from '../validators/admin.validator.js';
 export async function getDashboardStats(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const [totalContacts, openRequests, closedRequests, administrators, recentContacts, recentAuditLogs] = await Promise.all([
-      prisma.contactSubmission.count(),
+      prisma.contactSubmission.count({
+        where: { isDeleted: false },
+      }),
       prisma.contactSubmission.count({
         where: {
+          isDeleted: false,
           status: { in: [ContactStatus.NEW, ContactStatus.IN_PROGRESS] },
         },
       }),
       prisma.contactSubmission.count({
         where: {
+          isDeleted: false,
           status: { in: [ContactStatus.RESOLVED, ContactStatus.ARCHIVED, ContactStatus.SPAM] },
         },
       }),
@@ -23,6 +27,7 @@ export async function getDashboardStats(req: Request, res: Response, next: NextF
         where: { deletedAt: null },
       }),
       prisma.contactSubmission.findMany({
+        where: { isDeleted: false },
         take: 5,
         orderBy: { createdAt: 'desc' },
       }),
@@ -83,6 +88,21 @@ export async function getContacts(req: Request, res: Response, next: NextFunctio
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const whereClause: any = {};
 
+    if (status === 'BIN') {
+      // BIN: return only soft-deleted records
+      whereClause.isDeleted = true;
+    } else {
+      // All other views: exclude deleted records
+      whereClause.isDeleted = false;
+
+      if (status !== 'ALL') {
+        const validStatuses = Object.values(ContactStatus) as string[];
+        if (validStatuses.includes(status)) {
+          whereClause.status = status as ContactStatus;
+        }
+      }
+    }
+
     if (search) {
       whereClause.OR = [
         { name: { contains: search, mode: 'insensitive' } },
@@ -90,16 +110,6 @@ export async function getContacts(req: Request, res: Response, next: NextFunctio
         { company: { contains: search, mode: 'insensitive' } },
         { service: { contains: search, mode: 'insensitive' } },
       ];
-    }
-
-    if (status !== 'ALL') {
-      if (status === 'OPEN') {
-        whereClause.status = { in: [ContactStatus.NEW, ContactStatus.IN_PROGRESS] };
-      } else if (status === 'CLOSED') {
-        whereClause.status = { in: [ContactStatus.RESOLVED, ContactStatus.ARCHIVED, ContactStatus.SPAM] };
-      } else {
-        whereClause.status = status;
-      }
     }
 
     const [items, total] = await Promise.all([
@@ -150,6 +160,12 @@ export async function updateContactStatus(req: Request, res: Response, next: Nex
       return;
     }
 
+    const contact = await prisma.contactSubmission.findUnique({ where: { id: String(id) } });
+    if (!contact || contact.isDeleted) {
+      res.status(404).json({ success: false, message: 'Contact not found' });
+      return;
+    }
+
     const updated = await prisma.contactSubmission.update({
       where: { id: String(id) },
       data: { status: status as ContactStatus },
@@ -159,7 +175,7 @@ export async function updateContactStatus(req: Request, res: Response, next: Nex
       data: {
         event: 'CONTACT_UPDATED',
         actorName: req.user?.email || 'Admin',
-        details: `Contact request status updated for ${updated.name} (Email: ${updated.email}) to ${status}`,
+        details: `Contact status updated for ${updated.name} (Email: ${updated.email}) to ${status}`,
         ipAddress: req.ip || null,
         adminId: req.user?.adminId || null,
       },
@@ -171,6 +187,190 @@ export async function updateContactStatus(req: Request, res: Response, next: Nex
       data: updated,
     };
     res.status(200).json(response);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function updateContactNotes(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const { id } = req.params;
+    const { internalNotes } = req.body as { internalNotes?: string };
+
+    if (!id) {
+      res.status(400).json({ success: false, message: 'Contact ID is required' });
+      return;
+    }
+
+    if (internalNotes === undefined) {
+      res.status(400).json({ success: false, message: 'internalNotes field is required' });
+      return;
+    }
+
+    const contact = await prisma.contactSubmission.findUnique({ where: { id: String(id) } });
+    if (!contact || contact.isDeleted) {
+      res.status(404).json({ success: false, message: 'Contact not found' });
+      return;
+    }
+
+    const updated = await prisma.contactSubmission.update({
+      where: { id: String(id) },
+      data: { internalNotes: internalNotes.trim() || null },
+    });
+
+    await prisma.auditLog.create({
+      data: {
+        event: 'CONTACT_UPDATED',
+        actorName: req.user?.email || 'Admin',
+        details: `Internal notes updated for ${updated.name} (Email: ${updated.email})`,
+        ipAddress: req.ip || null,
+        adminId: req.user?.adminId || null,
+      },
+    });
+
+    const response: ApiResponse<typeof updated> = {
+      success: true,
+      message: 'Internal notes updated successfully',
+      data: updated,
+    };
+    res.status(200).json(response);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function deleteContact(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      res.status(400).json({ success: false, message: 'Contact ID is required' });
+      return;
+    }
+
+    const contact = await prisma.contactSubmission.findUnique({ where: { id: String(id) } });
+    if (!contact) {
+      res.status(404).json({ success: false, message: 'Contact not found' });
+      return;
+    }
+    if (contact.isDeleted) {
+      res.status(409).json({ success: false, message: 'Contact is already in the bin' });
+      return;
+    }
+
+    const updated = await prisma.contactSubmission.update({
+      where: { id: String(id) },
+      data: {
+        isDeleted: true,
+        deletedAt: new Date(),
+      },
+    });
+
+    await prisma.auditLog.create({
+      data: {
+        event: 'DELETE',
+        actorName: req.user?.email || 'Admin',
+        details: `Contact moved to bin: ${updated.name} (Email: ${updated.email})`,
+        ipAddress: req.ip || null,
+        adminId: req.user?.adminId || null,
+      },
+    });
+
+    const response: ApiResponse<typeof updated> = {
+      success: true,
+      message: 'Contact moved to bin successfully',
+      data: updated,
+    };
+    res.status(200).json(response);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function restoreContact(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      res.status(400).json({ success: false, message: 'Contact ID is required' });
+      return;
+    }
+
+    const contact = await prisma.contactSubmission.findUnique({ where: { id: String(id) } });
+    if (!contact) {
+      res.status(404).json({ success: false, message: 'Contact not found' });
+      return;
+    }
+    if (!contact.isDeleted) {
+      res.status(409).json({ success: false, message: 'Contact is not in the bin' });
+      return;
+    }
+
+    const updated = await prisma.contactSubmission.update({
+      where: { id: String(id) },
+      data: {
+        isDeleted: false,
+        deletedAt: null,
+      },
+    });
+
+    await prisma.auditLog.create({
+      data: {
+        event: 'UPDATE',
+        actorName: req.user?.email || 'Admin',
+        details: `Contact restored from bin: ${updated.name} (Email: ${updated.email})`,
+        ipAddress: req.ip || null,
+        adminId: req.user?.adminId || null,
+      },
+    });
+
+    const response: ApiResponse<typeof updated> = {
+      success: true,
+      message: 'Contact restored successfully',
+      data: updated,
+    };
+    res.status(200).json(response);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function permanentlyDeleteContact(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      res.status(400).json({ success: false, message: 'Contact ID is required' });
+      return;
+    }
+
+    const contact = await prisma.contactSubmission.findUnique({ where: { id: String(id) } });
+    if (!contact) {
+      res.status(404).json({ success: false, message: 'Contact not found' });
+      return;
+    }
+    if (!contact.isDeleted) {
+      res.status(409).json({ success: false, message: 'Contact must be in the bin before permanent deletion' });
+      return;
+    }
+
+    await prisma.contactSubmission.delete({ where: { id: String(id) } });
+
+    await prisma.auditLog.create({
+      data: {
+        event: 'DELETE',
+        actorName: req.user?.email || 'Admin',
+        details: `Contact permanently deleted: ${contact.name} (Email: ${contact.email})`,
+        ipAddress: req.ip || null,
+        severity: 'WARNING',
+        adminId: req.user?.adminId || null,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Contact permanently deleted',
+    });
   } catch (err) {
     next(err);
   }

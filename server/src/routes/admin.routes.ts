@@ -10,6 +10,11 @@ router.use(authenticate);
 
 router.get('/dashboard', adminController.getDashboardStats);
 router.get('/contacts', adminController.getContacts);
+router.patch('/contacts/:id/notes', adminController.updateContactNotes);
+router.patch('/contacts/:id/restore', adminController.restoreContact);
+// IMPORTANT: permanent delete must be registered before the generic delete
+router.delete('/contacts/:id/permanent', adminController.permanentlyDeleteContact);
+router.delete('/contacts/:id', adminController.deleteContact);
 router.patch('/contacts/:id', adminController.updateContactStatus);
 router.get('/audit-logs', adminController.getAuditLogs);
 router.get('/users', requireRole([AdminRole.SUPER_ADMIN]), adminController.getAdminUsers);
