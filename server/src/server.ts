@@ -74,6 +74,17 @@ app.use(errorHandler);
 async function start() {
   await connectDatabase();
 
+  // Warn (non-fatal) if email notification env vars are absent
+  const emailEnvMissing: string[] = [];
+  if (!process.env['RESEND_API_KEY']) emailEnvMissing.push('RESEND_API_KEY');
+  if (!process.env['SUPPORT_EMAIL']) emailEnvMissing.push('SUPPORT_EMAIL');
+  if (emailEnvMissing.length > 0) {
+    logger.warn(
+      `Email notifications are disabled. Missing environment variables: ${emailEnvMissing.join(', ')}. ` +
+      'Contact form submissions will still be saved to the database.'
+    );
+  }
+
   // Run database session cleanup on startup
   cleanupExpiredSessions()
     .then((result) => {
