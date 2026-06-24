@@ -12,6 +12,11 @@ export const contactSchema = z.object({
     .max(254, 'Email must be under 254 characters')
     .toLowerCase()
     .trim(),
+  phone: z
+    .string({ required_error: 'Phone number is required' })
+    .min(8, 'Phone number must be at least 8 characters')
+    .max(20, 'Phone number must be under 20 characters')
+    .trim(),
   company: z
     .string()
     .max(150, 'Company name must be under 150 characters')

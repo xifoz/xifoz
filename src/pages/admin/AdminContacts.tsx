@@ -8,6 +8,7 @@ interface ContactRequest {
   id: string;
   name: string;
   email: string;
+  phone: string | null;
   company: string | null;
   service: string | null;
   message: string;
@@ -22,6 +23,7 @@ interface ContactsApiResponse {
       id: string;
       name: string;
       email: string;
+      phone: string | null;
       company: string | null;
       service: string | null;
       message: string;
@@ -69,6 +71,7 @@ export default function AdminContacts() {
             id: item.id,
             name: item.name,
             email: item.email,
+            phone: item.phone ?? null,
             company: item.company,
             service: item.service,
             message: item.message,
@@ -225,6 +228,11 @@ export default function AdminContacts() {
                         <Mail className="w-3 h-3" />
                         <span>{contact.email}</span>
                       </div>
+                      {contact.phone ? (
+                        <div className="text-xs text-xifoz-text-secondary mt-0.5">{contact.phone}</div>
+                      ) : (
+                        <div className="text-xs text-xifoz-text-secondary/40 italic mt-0.5">No phone</div>
+                      )}
                     </td>
                     <td className="px-6 py-4">
                       <div className="text-xifoz-text font-medium">{contact.company || 'N/A'}</div>

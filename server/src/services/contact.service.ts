@@ -13,6 +13,7 @@ export async function submitContactForm(data: ContactInput) {
     submittedAt: submission.createdAt,
     name: data.name,
     email: data.email,
+    phone: data.phone,
     company: data.company,
     service: data.service,
     message: data.message,

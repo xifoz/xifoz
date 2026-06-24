@@ -3,19 +3,21 @@ interface TelegramLeadPayload {
   submittedAt: Date;
   name: string;
   email: string;
+  phone?: string | null;
   company?: string | null;
   service?: string | null;
   message: string;
 }
 
 function buildTelegramMessage(payload: TelegramLeadPayload): string {
-  const { submissionId, submittedAt, name, email, company, service, message } = payload;
+  const { submissionId, submittedAt, name, email, phone, company, service, message } = payload;
 
   return [
     '🚨 NEW XIFOZ LEAD',
     '',
     `Name: ${name}`,
     `Email: ${email}`,
+    `Phone: ${phone ?? 'Not provided'}`,
     `Company: ${company ?? 'Not provided'}`,
     `Service: ${service ?? 'Not provided'}`,
     '',

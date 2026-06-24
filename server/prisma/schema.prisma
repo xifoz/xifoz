@@ -57,6 +57,7 @@ model ContactSubmission {
   id        String        @id @default(cuid())
   name      String
   email     String
+  phone     String
   company   String?
   service   String?
   message   String

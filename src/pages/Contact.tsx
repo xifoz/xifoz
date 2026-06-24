@@ -15,6 +15,7 @@ const API_BASE = import.meta.env['VITE_API_URL'] ?? 'http://localhost:4000';
 interface FormData {
   name: string;
   email: string;
+  phone: string;
   company: string;
   service: string;
   message: string;
@@ -23,6 +24,7 @@ interface FormData {
 interface FormErrors {
   name?: string;
   email?: string;
+  phone?: string;
   message?: string;
   general?: string;
 }
@@ -34,6 +36,10 @@ function validate(data: FormData): FormErrors {
   }
   if (!data.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
     errors.email = 'Please enter a valid email address.';
+  }
+  const phoneTrimmed = data.phone.trim();
+  if (!phoneTrimmed || phoneTrimmed.length < 8 || phoneTrimmed.length > 20) {
+    errors.phone = 'Please enter a valid phone number (8–20 characters).';
   }
   if (!data.message.trim() || data.message.trim().length < 10) {
     errors.message = 'Please enter a message (at least 10 characters).';
@@ -84,6 +90,7 @@ function ContactForm() {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
+    phone: '',
     company: '',
     service: '',
     message: '',
@@ -227,6 +234,29 @@ function ContactForm() {
 
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
+          <label htmlFor="phone" className="block text-sm font-medium text-xifoz-text mb-2">
+            Phone Number <span aria-hidden="true" className="text-red-400">*</span>
+          </label>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            required
+            autoComplete="tel"
+            aria-describedby={errors.phone ? 'phone-error' : undefined}
+            aria-invalid={!!errors.phone}
+            value={formData.phone}
+            onChange={handleChange}
+            className={inputClass('phone')}
+            placeholder="+91 98765 43210"
+          />
+          {errors.phone && (
+            <p id="phone-error" role="alert" className="mt-1.5 text-xs text-red-400">
+              {errors.phone}
+            </p>
+          )}
+        </div>
+        <div>
           <label htmlFor="company" className="block text-sm font-medium text-xifoz-text mb-2">
             Company
           </label>
@@ -241,6 +271,9 @@ function ContactForm() {
             placeholder="Company Name"
           />
         </div>
+      </div>
+
+      <div className="grid sm:grid-cols-2 gap-5">
         <div>
           <label htmlFor="service" className="block text-sm font-medium text-xifoz-text mb-2">
             Service Interested In

@@ -5,13 +5,14 @@ interface ContactNotificationPayload {
   submittedAt: Date;
   name: string;
   email: string;
+  phone?: string | null;
   company?: string | null;
   service?: string | null;
   message: string;
 }
 
 function buildEmailHtml(payload: ContactNotificationPayload): string {
-  const { submissionId, submittedAt, name, email, company, service, message } = payload;
+  const { submissionId, submittedAt, name, email, phone, company, service, message } = payload;
 
   const row = (label: string, value: string) => `
     <tr>
@@ -60,6 +61,7 @@ function buildEmailHtml(payload: ContactNotificationPayload): string {
                   ${row('Timestamp', submittedAt.toUTCString())}
                   ${row('Name', name)}
                   ${row('Email', `<a href="mailto:${email}" style="color:#2563eb;text-decoration:none;">${email}</a>`)}
+                  ${row('Phone', phone ?? '<span style="color:#9ca3af;font-style:italic;">Not provided</span>')}
                   ${row('Company', company ?? '<span style="color:#9ca3af;font-style:italic;">Not provided</span>')}
                   ${row('Service', service ?? '<span style="color:#9ca3af;font-style:italic;">Not provided</span>')}
                 </tbody>
@@ -91,7 +93,7 @@ function buildEmailHtml(payload: ContactNotificationPayload): string {
 }
 
 function buildEmailText(payload: ContactNotificationPayload): string {
-  const { submissionId, submittedAt, name, email, company, service, message } = payload;
+  const { submissionId, submittedAt, name, email, phone, company, service, message } = payload;
   return [
     '[XIFOZ] New Contact Form Submission',
     '=====================================',
@@ -99,6 +101,7 @@ function buildEmailText(payload: ContactNotificationPayload): string {
     `Timestamp     : ${submittedAt.toUTCString()}`,
     `Name          : ${name}`,
     `Email         : ${email}`,
+    `Phone         : ${phone ?? 'Not provided'}`,
     `Company       : ${company ?? 'Not provided'}`,
     `Service       : ${service ?? 'Not provided'}`,
     '',

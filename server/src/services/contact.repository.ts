@@ -6,6 +6,7 @@ export async function createContactSubmission(data: ContactInput) {
     data: {
       name: data.name,
       email: data.email,
+      phone: data.phone,
       company: data.company ?? null,
       service: data.service ?? null,
       message: data.message,

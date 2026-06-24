@@ -51,6 +51,7 @@ async function seed() {
       {
         name: 'John Doe',
         email: 'john@company.com',
+        phone: '+91 98765 43210',
         company: 'Acme Corp',
         service: 'Penetration Testing',
         message: 'We need an external penetration test performed on our web apps and cloud infrastructure.',
@@ -59,6 +60,7 @@ async function seed() {
       {
         name: 'Jane Smith',
         email: 'jane@tech.io',
+        phone: '+91 87654 32109',
         company: 'Tech Solutions LLC',
         service: 'Cloud Security',
         message: 'Interested in securing our AWS accounts and doing a vulnerability assessment.',
