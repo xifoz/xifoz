@@ -1,5 +1,4 @@
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
 import {
   Sword,
   ScanSearch,
@@ -14,8 +13,9 @@ import {
   ClipboardCheck,
   Users,
 } from 'lucide-react';
+import type { ComponentType } from 'react';
 
-const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+const iconMap: Record<string, ComponentType<{ size?: number; className?: string }>> = {
   Sword,
   ScanSearch,
   ShieldCheck,
@@ -42,11 +42,9 @@ export function ServiceCard({ title, description, icon, className, compact = fal
   const IconComponent = iconMap[icon] || ShieldCheck;
 
   return (
-    <motion.div
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+    <div
       className={cn(
-        'group bg-xifoz-surface border border-xifoz-text/5 rounded-card p-6 md:p-8 transition-shadow duration-300 hover:shadow-card',
+        'group bg-xifoz-surface border border-xifoz-text/5 rounded-card p-6 md:p-8 transition-all duration-300 hover:shadow-card hover:-translate-y-1',
         className
       )}
     >
@@ -57,6 +55,6 @@ export function ServiceCard({ title, description, icon, className, compact = fal
       {!compact && (
         <p className="text-sm text-xifoz-text-secondary leading-relaxed">{description}</p>
       )}
-    </motion.div>
+    </div>
   );
 }

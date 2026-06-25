@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Container } from '@/components/Container';
 import { Button } from '@/components/Button';
 import { GridCoverage } from '@/components/GridCoverage';
@@ -10,6 +10,17 @@ const DigitalArmorSphere = lazy(() =>
 );
 
 export function HeroSection() {
+  const [showSphere, setShowSphere] = useState(false);
+
+  useEffect(() => {
+    const load = () => setShowSphere(true);
+    if ('requestIdleCallback' in window) {
+      (window as Window & typeof globalThis & { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(load);
+    } else {
+      setTimeout(load, 1200);
+    }
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-xifoz-base">
       {/* Background grid */}
@@ -20,15 +31,11 @@ export function HeroSection() {
 
       {/* 3D Sphere */}
       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[60%] h-[80%] z-[2] hidden lg:block">
-        <Suspense
-          fallback={
-            <div className="w-full h-full flex items-center justify-center">
-              <div className="w-8 h-8 border-2 border-xifoz-blue/20 border-t-xifoz-blue rounded-full animate-spin" />
-            </div>
-          }
-        >
-          <DigitalArmorSphere className="w-full h-full" />
-        </Suspense>
+        {showSphere && (
+          <Suspense fallback={null}>
+            <DigitalArmorSphere className="w-full h-full" />
+          </Suspense>
+        )}
       </div>
 
       {/* Content */}

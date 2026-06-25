@@ -7,7 +7,6 @@ import { industries } from '@/data/industries';
 import { GridCoverage } from '@/components/GridCoverage';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
 
 function IndustriesHero() {
   const { ref, isVisible } = useScrollReveal({ threshold: 0.2 });
@@ -71,8 +70,11 @@ function IndustryDetail({ industry, index }: { industry: typeof industries[0]; i
             <img
               src={industry.image}
               alt={industry.title}
+              width={700}
+              height={394}
               className="w-full aspect-video object-cover"
               loading="lazy"
+              decoding="async"
             />
           </div>
 
@@ -120,34 +122,41 @@ function IndustryDetail({ industry, index }: { industry: typeof industries[0]; i
   );
 }
 
+function IndustryCardsSection() {
+  const { ref, isVisible } = useScrollReveal({ threshold: 0.1 });
+
+  return (
+    <SectionWrapper background="dim">
+      <Container>
+        <div ref={ref} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+          {industries.map((industry, index) => (
+            <div
+              key={industry.id}
+              style={{
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                transition: `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`,
+              }}
+            >
+              <IndustryCard
+                title={industry.title}
+                description={industry.description}
+                image={industry.image}
+              />
+            </div>
+          ))}
+        </div>
+      </Container>
+    </SectionWrapper>
+  );
+}
+
 export default function Industries() {
-  useMeta({ title: 'Industries We Serve', description: "XIFOZ provides specialized cybersecurity solutions for healthcare, finance, technology, government, education, manufacturing, retail, and logistics.", canonical: '/industries' });
+  useMeta({ title: 'Industries We Serve', description: 'XIFOZ provides specialized cybersecurity solutions for healthcare, finance, technology, government, education, manufacturing, retail, and logistics.', canonical: '/industries' });
   return (
     <>
       <IndustriesHero />
-
-      {/* Industry Cards Grid */}
-      <SectionWrapper background="dim">
-        <Container>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
-            {industries.map((industry, index) => (
-              <motion.div
-                key={industry.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <IndustryCard
-                  title={industry.title}
-                  description={industry.description}
-                  image={industry.image}
-                />
-              </motion.div>
-            ))}
-          </div>
-        </Container>
-      </SectionWrapper>
+      <IndustryCardsSection />
 
       {/* Detailed Industry Sections */}
       {industries.map((industry, index) => (

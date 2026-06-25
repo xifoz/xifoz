@@ -2,7 +2,6 @@ import { Container } from '@/components/Container';
 import { GridCoverage } from '@/components/GridCoverage';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
 import { ShieldCheck, Zap, RefreshCw, Lock } from 'lucide-react';
 
 const metrics = [
@@ -98,13 +97,15 @@ export function SystemicResilience() {
           >
             <div className="grid grid-cols-2 gap-4">
               {metrics.map((metric, index) => (
-                <motion.div
+                <div
                   key={metric.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="bg-white/5 border border-white/10 rounded-card p-5 md:p-6 hover:border-white/20 transition-colors duration-300"
+                  style={{
+                    transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
+                    opacity: isVisible ? 1 : 0,
+                    transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                    transition: `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`,
+                  }}
                 >
                   <div className={cn('w-9 h-9 rounded-lg flex items-center justify-center mb-4', metric.bg)}>
                     <metric.icon size={18} className={metric.accent} />
@@ -118,7 +119,7 @@ export function SystemicResilience() {
                   <p className="text-xs text-xifoz-text-inverse/50 leading-relaxed">
                     {metric.description}
                   </p>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>

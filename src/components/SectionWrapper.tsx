@@ -17,7 +17,7 @@ export function SectionWrapper({
   background = 'base',
   padding = 'normal',
 }: SectionWrapperProps) {
-  const { ref, isVisible } = useScrollReveal({ threshold: 0.1 });
+  const { ref, isVisible } = useScrollReveal({ threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
 
   const bgClasses = {
     base: 'bg-xifoz-base',
@@ -39,8 +39,9 @@ export function SectionWrapper({
       className={cn(
         bgClasses[background],
         paddingClasses[padding],
-        'transition-all duration-700',
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5',
+        // Use will-change only when transitioning to avoid GPU layer promotion for static elements
+        'transition-opacity transition-transform duration-700',
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
         className
       )}
     >

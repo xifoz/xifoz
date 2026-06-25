@@ -1,5 +1,4 @@
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -12,11 +11,9 @@ interface IndustryCardProps {
 
 export function IndustryCard({ title, description, image, className }: IndustryCardProps) {
   return (
-    <motion.div
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+    <div
       className={cn(
-        'group relative overflow-hidden rounded-card bg-xifoz-surface border border-xifoz-text/5 transition-shadow duration-300 hover:shadow-card',
+        'group relative overflow-hidden rounded-card bg-xifoz-surface border border-xifoz-text/5 transition-all duration-300 hover:shadow-card hover:-translate-y-1',
         className
       )}
     >
@@ -24,8 +21,11 @@ export function IndustryCard({ title, description, image, className }: IndustryC
         <img
           src={image}
           alt={title}
+          width={400}
+          height={250}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
+          decoding="async"
         />
       </div>
       <div className="p-6">
@@ -39,11 +39,12 @@ export function IndustryCard({ title, description, image, className }: IndustryC
           <Link
             to="/industries"
             className="mt-1 p-2 rounded-full bg-xifoz-dim text-xifoz-text-secondary hover:bg-xifoz-blue hover:text-white transition-colors duration-300 flex-shrink-0"
+            aria-label={`Learn more about ${title} security`}
           >
             <ArrowUpRight size={16} />
           </Link>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

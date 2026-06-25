@@ -23,8 +23,9 @@ import {
   ClipboardCheck,
   Users,
 } from 'lucide-react';
+import type { ComponentType } from 'react';
 
-const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+const iconMap: Record<string, ComponentType<{ size?: number; className?: string }>> = {
   Sword, ScanSearch, ShieldCheck, MonitorCheck, CloudCog, GlobeLock,
   Webhook, Network, Siren, FileCheck, ClipboardCheck, Users,
 };

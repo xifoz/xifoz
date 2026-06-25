@@ -1,5 +1,4 @@
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
 import { Badge } from './Badge';
 import { Link } from 'react-router-dom';
 
@@ -27,11 +26,9 @@ export function BlogCard({
   featured = false,
 }: BlogCardProps) {
   return (
-    <motion.div
-      whileHover={{ scale: 1.01 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
+    <div
       className={cn(
-        'group cursor-pointer',
+        'group cursor-pointer blog-card-hover',
         featured ? 'md:col-span-2 md:row-span-2' : '',
         className
       )}
@@ -46,8 +43,11 @@ export function BlogCard({
           <img
             src={image}
             alt={title}
+            width={featured ? 800 : 400}
+            height={featured ? 450 : 250}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             loading="lazy"
+            decoding="async"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
           <div className="absolute top-4 left-4">
@@ -75,6 +75,6 @@ export function BlogCard({
           )}
         </div>
       </Link>
-    </motion.div>
+    </div>
   );
 }

@@ -5,7 +5,6 @@ import { Button } from '@/components/Button';
 import { GridCoverage } from '@/components/GridCoverage';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
 import { Target, Eye, Heart, Shield, Lightbulb, Users } from 'lucide-react';
 
 const values = [
@@ -95,7 +94,7 @@ function AboutHero() {
             )}
           >
             XIFOZ was founded in 2026 with a singular purpose: to make world-class cybersecurity
-            accessible to every organization. Inspired by the Greek word "Xiphos" (sword), we
+            accessible to every organization. Inspired by the Greek word &ldquo;Xiphos&rdquo; (sword), we
             represent precision, intelligence, and unwavering defense.
           </p>
         </div>
@@ -104,8 +103,92 @@ function AboutHero() {
   );
 }
 
+function ValuesSection() {
+  const { ref, isVisible } = useScrollReveal({ threshold: 0.1 });
+
+  return (
+    <SectionWrapper background="base">
+      <Container>
+        <div className="text-center mb-12">
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-blue mb-4 block">
+            Our Values
+          </span>
+          <h2 className="text-3xl md:text-4xl font-normal text-xifoz-text tracking-tight">
+            Principles that guide everything we do
+          </h2>
+        </div>
+        <div ref={ref} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {values.map((value, index) => (
+            <div
+              key={value.title}
+              className="bg-xifoz-surface border border-xifoz-text/5 rounded-card p-6 md:p-8"
+              style={{
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                transition: `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`,
+              }}
+            >
+              <div className="w-10 h-10 rounded-lg bg-xifoz-blue/5 flex items-center justify-center mb-4">
+                <value.icon size={20} className="text-xifoz-blue" />
+              </div>
+              <h3 className="text-base font-semibold text-xifoz-text mb-2">{value.title}</h3>
+              <p className="text-sm text-xifoz-text-secondary leading-relaxed">
+                {value.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </SectionWrapper>
+  );
+}
+
+function TimelineSection() {
+  const { ref, isVisible } = useScrollReveal({ threshold: 0.1 });
+
+  return (
+    <SectionWrapper background="dim">
+      <Container>
+        <div className="text-center mb-12">
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-blue mb-4 block">
+            Our Journey
+          </span>
+          <h2 className="text-3xl md:text-4xl font-normal text-xifoz-text tracking-tight">
+            Milestones along the way
+          </h2>
+        </div>
+        <div ref={ref} className="max-w-3xl mx-auto">
+          {timeline.map((item, index) => (
+            <div
+              key={item.year}
+              className="relative pl-8 md:pl-12 pb-10 last:pb-0"
+              style={{
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'translateX(0)' : 'translateX(-20px)',
+                transition: `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`,
+              }}
+            >
+              <div className="absolute left-0 top-0 w-6 h-6 rounded-full bg-xifoz-blue/10 border-2 border-xifoz-blue flex items-center justify-center">
+                <span className="w-2 h-2 rounded-full bg-xifoz-blue" />
+              </div>
+              {index < timeline.length - 1 && (
+                <div className="absolute left-[11px] top-6 w-0.5 h-full bg-xifoz-text/10" />
+              )}
+              <span className="text-xs font-semibold text-xifoz-blue mb-1 block">{item.year}</span>
+              <h3 className="text-lg font-semibold text-xifoz-text mb-1">{item.title}</h3>
+              <p className="text-sm text-xifoz-text-secondary leading-relaxed">
+                {item.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </SectionWrapper>
+  );
+}
+
 export default function About() {
-  useMeta({ title: 'About Us', description: "Learn about XIFOZ — founded in 2026 with a mission to make enterprise-grade cybersecurity accessible to every organization.", canonical: '/about' });
+  useMeta({ title: 'About Us', description: 'Learn about XIFOZ — founded in 2026 with a mission to make enterprise-grade cybersecurity accessible to every organization.', canonical: '/about' });
   return (
     <>
       <AboutHero />
@@ -154,77 +237,8 @@ export default function About() {
         </Container>
       </SectionWrapper>
 
-      {/* Core Values */}
-      <SectionWrapper background="base">
-        <Container>
-          <div className="text-center mb-12">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-blue mb-4 block">
-              Our Values
-            </span>
-            <h2 className="text-3xl md:text-4xl font-normal text-xifoz-text tracking-tight">
-              Principles that guide everything we do
-            </h2>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value, index) => (
-              <motion.div
-                key={value.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-xifoz-surface border border-xifoz-text/5 rounded-card p-6 md:p-8"
-              >
-                <div className="w-10 h-10 rounded-lg bg-xifoz-blue/5 flex items-center justify-center mb-4">
-                  <value.icon size={20} className="text-xifoz-blue" />
-                </div>
-                <h3 className="text-base font-semibold text-xifoz-text mb-2">{value.title}</h3>
-                <p className="text-sm text-xifoz-text-secondary leading-relaxed">
-                  {value.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </Container>
-      </SectionWrapper>
-
-      {/* Our Journey Timeline */}
-      <SectionWrapper background="dim">
-        <Container>
-          <div className="text-center mb-12">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-blue mb-4 block">
-              Our Journey
-            </span>
-            <h2 className="text-3xl md:text-4xl font-normal text-xifoz-text tracking-tight">
-              Milestones along the way
-            </h2>
-          </div>
-          <div className="max-w-3xl mx-auto">
-            {timeline.map((item, index) => (
-              <motion.div
-                key={item.year}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="relative pl-8 md:pl-12 pb-10 last:pb-0"
-              >
-                <div className="absolute left-0 top-0 w-6 h-6 rounded-full bg-xifoz-blue/10 border-2 border-xifoz-blue flex items-center justify-center">
-                  <span className="w-2 h-2 rounded-full bg-xifoz-blue" />
-                </div>
-                {index < timeline.length - 1 && (
-                  <div className="absolute left-[11px] top-6 w-0.5 h-full bg-xifoz-text/10" />
-                )}
-                <span className="text-xs font-semibold text-xifoz-blue mb-1 block">{item.year}</span>
-                <h3 className="text-lg font-semibold text-xifoz-text mb-1">{item.title}</h3>
-                <p className="text-sm text-xifoz-text-secondary leading-relaxed">
-                  {item.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </Container>
-      </SectionWrapper>
+      <ValuesSection />
+      <TimelineSection />
 
       {/* CTA */}
       <section className="py-20 md:py-28 bg-xifoz-base">

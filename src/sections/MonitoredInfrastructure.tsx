@@ -1,7 +1,6 @@
 import { Container } from '@/components/Container';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
 import { Activity, Server, Database, Globe, Lock, Wifi } from 'lucide-react';
 
 const infrastructureItems = [
@@ -31,17 +30,14 @@ export function MonitoredInfrastructure() {
           >
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
               {infrastructureItems.map((item, index) => (
-                <motion.div
+                <div
                   key={index}
-                  initial={{ opacity: 0, scale: 0.8, rotateY: 180 }}
-                  whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    duration: 0.5,
-                    delay: index * 0.08,
-                    ease: [0.4, 0, 0.2, 1],
-                  }}
                   className="bg-xifoz-surface border border-xifoz-text/5 rounded-card p-4 md:p-5 text-center hover:border-xifoz-blue/20 transition-colors duration-300"
+                  style={{
+                    opacity: isVisible ? 1 : 0,
+                    transform: isVisible ? 'scale(1)' : 'scale(0.85)',
+                    transition: `opacity 0.5s ease ${index * 0.08}s, transform 0.5s ease ${index * 0.08}s`,
+                  }}
                 >
                   <div className="w-8 h-8 mx-auto mb-2 rounded-lg bg-xifoz-blue/5 flex items-center justify-center">
                     <item.icon size={16} className="text-xifoz-blue" />
@@ -58,7 +54,7 @@ export function MonitoredInfrastructure() {
                       {item.status}
                     </span>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>

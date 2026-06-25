@@ -1,6 +1,6 @@
 import { Container } from '@/components/Container';
 import { SectionWrapper } from '@/components/SectionWrapper';
-import { motion } from 'framer-motion';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const frameworks = [
   'ISO 27001',
@@ -16,6 +16,8 @@ const frameworks = [
 ];
 
 export function FrameworksSection() {
+  const { ref, isVisible } = useScrollReveal({ threshold: 0.15 });
+
   return (
     <SectionWrapper background="dim">
       <Container>
@@ -31,18 +33,19 @@ export function FrameworksSection() {
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-3 md:gap-4">
+        <div ref={ref} className="flex flex-wrap justify-center gap-3 md:gap-4">
           {frameworks.map((framework, index) => (
-            <motion.div
+            <div
               key={framework}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
               className="px-5 py-2.5 bg-xifoz-surface border border-xifoz-text/5 rounded-pill text-sm font-medium text-xifoz-text hover:border-xifoz-blue/20 hover:shadow-sm transition-all duration-300 cursor-default"
+              style={{
+                opacity: isVisible ? 1 : 0,
+                transform: isVisible ? 'scale(1)' : 'scale(0.9)',
+                transition: `opacity 0.3s ease ${index * 0.05}s, transform 0.3s ease ${index * 0.05}s`,
+              }}
             >
               {framework}
-            </motion.div>
+            </div>
           ))}
         </div>
       </Container>

@@ -1,6 +1,6 @@
 import { Container } from '@/components/Container';
 import { SectionWrapper } from '@/components/SectionWrapper';
-import { motion } from 'framer-motion';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { Shield, Clock, Users, Target, Zap, Award } from 'lucide-react';
 
 const reasons = [
@@ -37,6 +37,8 @@ const reasons = [
 ];
 
 export function WhyChooseSection() {
+  const { ref, isVisible } = useScrollReveal({ threshold: 0.1 });
+
   return (
     <SectionWrapper background="base">
       <Container>
@@ -55,15 +57,16 @@ export function WhyChooseSection() {
           </div>
 
           {/* Right - Reasons grid */}
-          <div className="grid sm:grid-cols-2 gap-6">
+          <div ref={ref} className="grid sm:grid-cols-2 gap-6">
             {reasons.map((reason, index) => (
-              <motion.div
+              <div
                 key={reason.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group"
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
+                  transition: `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`,
+                }}
               >
                 <div className="w-10 h-10 rounded-lg bg-xifoz-blue/5 flex items-center justify-center mb-3 group-hover:bg-xifoz-blue/10 transition-colors duration-300">
                   <reason.icon size={20} className="text-xifoz-blue" />
@@ -72,7 +75,7 @@ export function WhyChooseSection() {
                 <p className="text-sm text-xifoz-text-secondary leading-relaxed">
                   {reason.description}
                 </p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
