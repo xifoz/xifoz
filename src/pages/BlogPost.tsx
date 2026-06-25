@@ -4,6 +4,7 @@ import { blogPosts } from '@/data/blog';
 import { Badge } from '@/components/Badge';
 import { ArrowLeft, Calendar, Clock, User, Share2 } from 'lucide-react';
 import { useEffect } from 'react';
+import { useMeta } from '@/hooks/useMeta';
 
 function renderMarkdown(content: string): string {
   let html = content
@@ -36,6 +37,13 @@ export default function BlogPost() {
     window.scrollTo(0, 0);
   }, [slug]);
 
+  useMeta({
+    title: post?.title || 'Article Not Found',
+    description: post?.excerpt || 'Article not found.',
+    canonical: post ? `/blog/${post.slug}` : undefined,
+    ogImage: post?.image ? `https://xifoz.com${post.image}` : undefined,
+  });
+
   if (!post) {
     return (
       <Container className="pt-32 pb-16">
@@ -55,6 +63,33 @@ export default function BlogPost() {
 
   return (
     <>
+      {/* Article Structured Data */}
+      {post && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": post.title,
+            "image": [
+              `https://xifoz.com${post.image}`
+            ],
+            "datePublished": new Date(post.date).toISOString(),
+            "author": [{
+                "@type": "Person",
+                "name": post.author
+            }],
+            "publisher": {
+              "@type": "Organization",
+              "name": "XIFOZ",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://xifoz.com/android-chrome-512x512.png"
+              }
+            }
+          })
+        }} />
+      )}
+
       {/* Hero Image */}
       <div className="relative h-[40vh] md:h-[50vh] overflow-hidden">
         <img
