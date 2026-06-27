@@ -70,7 +70,7 @@ export function MonitoredInfrastructure() {
               Monitoring
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal text-xifoz-text tracking-tight mb-6">
-              We monitor your code and infrastructure so you do not have to.
+              We Monitor Your Code and Infrastructure So You Don't.
             </h2>
             <p className="text-base md:text-lg text-xifoz-text-secondary leading-relaxed mb-8">
               From dependency vulnerabilities to runtime exploits, XIFOZ integrates directly into your CI/CD pipeline. Continuous monitoring ensures threats are caught before they reach production.

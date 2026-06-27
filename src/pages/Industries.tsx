@@ -30,7 +30,7 @@ function IndustriesHero() {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
-            Industry-specific security solutions
+            Industry-Specific Security Solutions
           </h1>
           <p
             className={cn(
@@ -168,7 +168,7 @@ export default function Industries() {
         <Container>
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-normal text-xifoz-text tracking-tight mb-4">
-              Need a tailored security solution?
+              Need a Tailored Security Solution?
             </h2>
             <p className="text-base text-xifoz-text-secondary mb-8">
               We customize our services to meet the unique requirements of your industry. Let us discuss your specific needs.

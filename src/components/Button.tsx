@@ -36,9 +36,9 @@ export function Button({
   };
 
   const sizeClasses = {
-    sm: 'px-4 py-2 text-sm',
-    md: 'px-6 py-2.5 text-sm',
-    lg: 'px-8 py-3.5 text-base',
+    sm: 'px-4 h-9 text-sm min-h-[36px]',
+    md: 'px-6 h-12 text-base min-h-[48px]',
+    lg: 'px-8 h-14 text-base min-h-[56px]',
   };
 
   const disabledClasses = disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer';

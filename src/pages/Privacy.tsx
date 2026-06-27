@@ -16,7 +16,7 @@ export default function Privacy() {
             Privacy Policy
           </h1>
           <p className="text-lg text-xifoz-text-secondary">
-            Last updated: December 2024
+            Last updated: June 2026
           </p>
         </Container>
       </section>

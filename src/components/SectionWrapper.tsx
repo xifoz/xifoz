@@ -7,7 +7,7 @@ interface SectionWrapperProps {
   className?: string;
   id?: string;
   background?: 'base' | 'surface' | 'dim' | 'structural';
-  padding?: 'normal' | 'large' | 'none';
+  padding?: 'normal' | 'large' | 'small' | 'none';
 }
 
 export function SectionWrapper({
@@ -27,8 +27,9 @@ export function SectionWrapper({
   };
 
   const paddingClasses = {
-    normal: 'py-16 md:py-24',
-    large: 'py-24 md:py-32',
+    normal: 'py-[var(--spacing-section)]',
+    large: 'py-[var(--spacing-section-lg)]',
+    small: 'py-[var(--spacing-section-sm)]',
     none: '',
   };
 

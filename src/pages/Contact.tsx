@@ -69,7 +69,7 @@ function ContactHero() {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
-            Let us start a conversation
+            Let Us Start a Conversation
           </h1>
           <p
             className={cn(
@@ -415,7 +415,7 @@ export default function Contact() {
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-10">
               <h2 className="text-3xl md:text-4xl font-normal text-xifoz-text tracking-tight mb-4">
-                Common questions
+                Common Questions
               </h2>
               <p className="text-base text-xifoz-text-secondary">
                 Quick answers to frequently asked questions about contacting us.

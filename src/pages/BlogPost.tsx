@@ -91,7 +91,7 @@ export default function BlogPost() {
       )}
 
       {/* Hero Image */}
-      <div className="relative h-[40vh] md:h-[50vh] overflow-hidden">
+      <div className="relative h-[40svh] min-h-[320px] max-h-[500px] overflow-hidden">
         <img
           src={post.image}
           alt={post.title}

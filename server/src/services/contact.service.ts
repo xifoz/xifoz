@@ -19,38 +19,40 @@ export async function submitContactForm(data: ContactInput) {
     message: data.message,
   };
 
-  // 2. Send email notification — secondary operation (never blocks success response)
-  try {
-    await sendContactNotificationEmail(notificationPayload);
-    logger.info('Lead notification email sent', {
-      submissionId: submission.id,
-      email: data.email,
-      company: data.company,
+  // 2. Send email notification in the background
+  void sendContactNotificationEmail(notificationPayload)
+    .then(() => {
+      logger.info('Lead notification email sent', {
+        submissionId: submission.id,
+        email: data.email,
+        company: data.company,
+      });
+    })
+    .catch((err) => {
+      logger.error('Lead notification email failed', {
+        submissionId: submission.id,
+        email: data.email,
+        company: data.company,
+        error: err instanceof Error ? err.message : String(err),
+      });
     });
-  } catch (err) {
-    logger.error('Lead notification email failed', {
-      submissionId: submission.id,
-      email: data.email,
-      company: data.company,
-      error: err instanceof Error ? err.message : String(err),
-    });
-  }
 
-  // 3. Send Telegram notification — secondary operation (never blocks success response)
-  try {
-    await sendTelegramLeadNotification(notificationPayload);
-    logger.info('Telegram notification sent', {
-      submissionId: submission.id,
-      email: data.email,
+  // 3. Send Telegram notification in the background
+  void sendTelegramLeadNotification(notificationPayload)
+    .then(() => {
+      logger.info('Telegram notification sent', {
+        submissionId: submission.id,
+        email: data.email,
+      });
+    })
+    .catch((err) => {
+      logger.error('Telegram notification failed', {
+        submissionId: submission.id,
+        email: data.email,
+        error: err instanceof Error ? err.message : String(err),
+      });
     });
-  } catch (err) {
-    logger.error('Telegram notification failed', {
-      submissionId: submission.id,
-      email: data.email,
-      error: err instanceof Error ? err.message : String(err),
-    });
-  }
 
-  // 4. Return submission regardless of notification outcomes
+  // 4. Return immediately after saving the submission
   return submission;
 }

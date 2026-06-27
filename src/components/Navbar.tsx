@@ -18,9 +18,16 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : '';
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.classList.add('touch-none');
+    } else {
+      document.body.style.overflow = '';
+      document.body.classList.remove('touch-none');
+    }
     return () => {
       document.body.style.overflow = '';
+      document.body.classList.remove('touch-none');
     };
   }, [isMobileMenuOpen]);
 
@@ -39,11 +46,11 @@ export function Navbar() {
     <>
       <nav
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-white',
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-white pt-[env(safe-area-inset-top)]',
           isScrolled ? 'border-b border-xifoz-border py-0' : 'border-b border-transparent py-2'
         )}
       >
-        <div className="mx-auto max-w-content px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div className="mx-auto max-w-content px-4 sm:px-6 md:px-8 w-full">
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 group" aria-label="XIFOZ home">
@@ -109,7 +116,7 @@ export function Navbar() {
         aria-label="Navigation menu"
         aria-hidden={!isMobileMenuOpen}
         className={cn(
-          'fixed inset-0 z-[60] bg-xifoz-base lg:hidden',
+          'fixed inset-0 z-[60] bg-xifoz-base lg:hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]',
           'transition-all duration-300 ease-in-out',
           isMobileMenuOpen
             ? 'translate-x-0 opacity-100 pointer-events-auto'

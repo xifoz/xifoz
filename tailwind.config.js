@@ -3,6 +3,16 @@ module.exports = {
   darkMode: ["class"],
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
+    screens: {
+      xs: '480px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1440px',
+      '3xl': '1600px',
+      '4xl': '1920px',
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",
@@ -75,7 +85,21 @@ module.exports = {
         card: "0px 20px 40px rgba(0, 0, 0, 0.08)",
       },
       maxWidth: {
-        content: '1400px',
+        content: '1440px', // Updated to container-content size
+        reading: '800px',
+      },
+      spacing: {
+        'safe-top': 'env(safe-area-inset-top)',
+        'safe-bottom': 'env(safe-area-inset-bottom)',
+        'safe-left': 'env(safe-area-inset-left)',
+        'safe-right': 'env(safe-area-inset-right)',
+      },
+      zIndex: {
+        'header': '50',
+        'drawer': '60',
+        'modal': '70',
+        'toast': '80',
+        'tooltip': '90',
       },
       keyframes: {
         "accordion-down": {

@@ -52,7 +52,7 @@ function ServicesHero() {
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
-            Cybersecurity services built for modern organizations
+            Cybersecurity Services Built for Modern Organizations
           </h1>
           <p
             className={cn(
@@ -178,7 +178,7 @@ export default function Services() {
                 Service FAQs
               </h2>
               <p className="text-base text-xifoz-text-secondary">
-                Common questions about our cybersecurity services.
+                Common Questions about our cybersecurity services.
               </p>
             </div>
             <FAQSection items={servicesFAQ} />

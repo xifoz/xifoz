@@ -114,7 +114,7 @@ function ValuesSection() {
             Our Values
           </span>
           <h2 className="text-3xl md:text-4xl font-normal text-xifoz-text tracking-tight">
-            Principles that guide everything we do
+            Principles that Guide Everything We Do
           </h2>
         </div>
         <div ref={ref} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -154,7 +154,7 @@ function TimelineSection() {
             Our Journey
           </span>
           <h2 className="text-3xl md:text-4xl font-normal text-xifoz-text tracking-tight">
-            Milestones along the way
+            Milestones Along The Way
           </h2>
         </div>
         <div ref={ref} className="max-w-3xl mx-auto">
@@ -245,7 +245,7 @@ export default function About() {
         <Container>
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-normal text-xifoz-text tracking-tight mb-4">
-              Be part of our story
+              Be a Part of Our Story
             </h2>
             <p className="text-base text-xifoz-text-secondary mb-8">
               We are at the start of our journey and looking for organizations who want a true

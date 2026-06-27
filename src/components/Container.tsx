@@ -4,11 +4,17 @@ import type { ReactNode } from 'react';
 interface ContainerProps {
   children: ReactNode;
   className?: string;
+  variant?: 'content' | 'reading';
 }
 
-export function Container({ children, className }: ContainerProps) {
+export function Container({ children, className, variant = 'content' }: ContainerProps) {
+  const variantClasses = {
+    content: 'container-xifoz',
+    reading: 'container-reading',
+  };
+
   return (
-    <div className={cn('mx-auto max-w-content px-4 sm:px-6 lg:px-8 xl:px-12', className)}>
+    <div className={cn(variantClasses[variant], className)}>
       {children}
     </div>
   );

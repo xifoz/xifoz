@@ -7,12 +7,12 @@ import { ArrowUpRight, Linkedin } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="bg-white border-t border-xifoz-border">
+    <footer className="bg-white border-t border-xifoz-border pb-[env(safe-area-inset-bottom)]">
       {/* Large CTA */}
-      <Container className="py-24 md:py-32">
+      <Container className="py-[var(--spacing-section-lg)]">
         <div className="max-w-2xl">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-normal text-xifoz-text leading-tight tracking-tight mb-6">
-            Ready to get started?
+          <h2 className="text-fluid-heading-xl font-normal text-xifoz-text leading-tight tracking-tight mb-6">
+            Ready To Get Started?
           </h2>
           <p className="text-lg text-xifoz-text-secondary mb-8 leading-relaxed">
             Protect your organization with proactive cybersecurity solutions. Book a free consultation and discover how XIFOZ can strengthen your security posture.
@@ -31,10 +31,10 @@ export function Footer() {
       <Separator className="bg-xifoz-border" />
 
       {/* Links Grid */}
-      <Container className="py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 lg:gap-16">
+      <Container className="py-[var(--spacing-section)]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 lg:gap-16">
           {/* Brand Column */}
-          <div className="col-span-2 md:col-span-1">
+          <div className="sm:col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
               <div className="flex items-center gap-2.5">
                 <img
@@ -114,7 +114,7 @@ export function Footer() {
       <Separator className="bg-xifoz-border" />
 
       {/* Bottom */}
-      <Container className="py-6">
+      <Container className="py-[var(--spacing-section-sm)]">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-xifoz-text-secondary">
             &copy; {new Date().getFullYear()} XIFOZ. All rights reserved.
