@@ -1,74 +1,87 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
 import { Container } from '@/components/Container';
 import { Button } from '@/components/Button';
-import { GridCoverage } from '@/components/GridCoverage';
-
-const DigitalArmorSphere = lazy(() =>
-  import('@/components/DigitalArmorSphere').then((mod) => ({
-    default: mod.DigitalArmorSphere,
-  }))
-);
+import { useScrollReveal } from '@/hooks/useScrollReveal';
+import { cn } from '@/lib/utils';
 
 export function HeroSection() {
-  const [showSphere, setShowSphere] = useState(false);
-
-  useEffect(() => {
-    const load = () => setShowSphere(true);
-    if ('requestIdleCallback' in window) {
-      (window as Window & typeof globalThis & { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(load);
-    } else {
-      setTimeout(load, 1200);
-    }
-  }, []);
+  const { ref, isVisible } = useScrollReveal({ threshold: 0.1 });
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-xifoz-base">
-      {/* Background grid */}
-      <GridCoverage className="absolute inset-0" opacity={0.3} />
+    <section ref={ref} className="relative flex min-h-[92vh] items-center overflow-hidden bg-xifoz-dark-base">
+      <Container className="py-24 lg:py-32">
+        <div className="grid items-center gap-12 xl:gap-16 lg:grid-cols-[46%_54%]">
 
-      {/* Gradient overlay for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-xifoz-base via-xifoz-base/90 to-transparent z-[1]" />
+          {/* LEFT */}
 
-      {/* 3D Sphere */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[60%] h-[80%] z-[2] hidden lg:block">
-        {showSphere && (
-          <Suspense fallback={null}>
-            <DigitalArmorSphere className="w-full h-full" />
-          </Suspense>
-        )}
-      </div>
+          <div
+            className={cn(
+              'transition-all duration-1000',
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            )}
+          >
 
-      {/* Content */}
-      <Container className="relative z-[3] pt-24 pb-16">
-        <div className="max-w-2xl">
-          {/* Eyebrow */}
-          <div className="opacity-100 translate-y-0 transition-all duration-700 delay-300">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-blue mb-6 block">
-              Enterprise Cybersecurity
+            <span className="block text-[12px] font-medium uppercase tracking-[0.35em] text-xifoz-dark-text-muted">
+              Enterprise Cybersecurity Consulting
             </span>
+
+            <h1 className="mt-8 text-5xl font-light leading-[0.92] tracking-[-0.05em] text-xifoz-dark-text md:text-6xl xl:text-[78px]">
+              We Provide
+              <br />
+              Enterprise Grade
+              <br />
+              Security without
+              <br />
+              Enterprise
+              <br />
+              Complexity.
+            </h1>
+
+            <p className="mt-8 max-w-[560px] text-base md:text-lg leading-7 text-xifoz-dark-text-muted md:text-xl">
+              XIFOZ helps organisations strengthen security through
+              penetration testing, cloud security, compliance,
+              managed security and advisory services—delivering
+              enterprise-grade protection without enterprise complexity.
+            </p>
+
+            <div className="mt-12 flex flex-wrap gap-4">
+
+              <Button
+                to="/contact"
+                size="lg"
+              >
+                Talk to an Expert
+              </Button>
+
+              <Button
+                to="/services"
+                variant="outline"
+                size="lg"
+              >
+                Explore Capabilities
+              </Button>
+
+            </div>
+
           </div>
 
-          {/* Headline */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal text-xifoz-text leading-[1.05] tracking-tight mb-6 opacity-100 translate-y-0 transition-all duration-700 delay-500">
-            Do not let anyone breach your{' '}
-            <span className="text-gradient">digital infrastructure</span>
-          </h1>
+          {/* RIGHT */}
 
-          {/* Subheadline */}
-          <p className="text-lg md:text-xl text-xifoz-text-secondary leading-relaxed mb-10 max-w-xl opacity-100 translate-y-0 transition-all duration-700 delay-700">
-            XIFOZ provides continuous monitoring, proactive threat hunting, and bulletproof cloud
-            architecture for scaling teams.
-          </p>
+          <div
+            className={cn(
+              'flex justify-end transition-all duration-1000 delay-300',
+              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'
+            )}
+          >
 
-          {/* CTAs */}
-          <div className="flex flex-wrap gap-4 opacity-100 translate-y-0 transition-all duration-700 delay-900">
-            <Button to="/contact" size="lg">
-              Book Free Consultation
-            </Button>
-            <Button to="/services" variant="outline" size="lg">
-              Explore Services
-            </Button>
+            <img
+              src="/images/hero-architecture.png"
+              alt="XIFOZ Enterprise Security"
+              className="w-full max-w-[760px] object-cover"
+              loading="eager"
+            />
+
           </div>
+
         </div>
       </Container>
     </section>

@@ -41,25 +41,37 @@
 
     <!-- Structured Data -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "XIFOZ",
-      "url": "https://xifoz.com",
-      "logo": "https://xifoz.com/android-chrome-512x512.png",
-      "image": "https://xifoz.com/images/og/og-image.jpg",
-      "description": "Enterprise cybersecurity consulting — penetration testing, managed security, compliance, and cloud security.",
-      "foundingDate": "2026",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "contactType": "customer support",
-        "email": "hello@xifoz.com"
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://xifoz.com/#organization",
+        "name": "XIFOZ",
+        "url": "https://xifoz.com",
+        "logo": "https://xifoz.com/android-chrome-512x512.png",
+        "image": "https://xifoz.com/images/og/og-image.jpg",
+        "description": "Enterprise cybersecurity consulting — penetration testing, managed security, compliance, and cloud security.",
+        "foundingDate": "2026",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "hello@xifoz.com"
+        },
+        "sameAs": [
+          "https://linkedin.com/company/xifoz"
+        ]
       },
-      "sameAs": [
-        "https://linkedin.com/company/xifoz",
-        "https://twitter.com/xifoz"
-      ]
-    }
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://xifoz.com",
+        "name": "XIFOZ",
+        "alternateName": "XIFOZ Cybersecurity",
+        "publisher": {
+          "@id": "https://xifoz.com/#organization"
+        }
+      }
+    ]
     </script>
   </head>
   <body>

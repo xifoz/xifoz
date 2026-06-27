@@ -48,10 +48,10 @@ export function WhyChooseSection() {
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-blue mb-4 block">
               Why XIFOZ
             </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal text-xifoz-text tracking-tight mb-6">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal text-xifoz-dark-text tracking-tight mb-6">
               Why organizations trust us with their security?
             </h2>
-            <p className="text-base md:text-lg text-xifoz-text-secondary leading-relaxed">
+            <p className="text-base md:text-lg text-xifoz-dark-text-muted leading-relaxed">
               We combine technical expertise with business understanding to deliver security solutions that protect without hindering growth.
             </p>
           </div>
@@ -68,11 +68,11 @@ export function WhyChooseSection() {
                   transition: `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`,
                 }}
               >
-                <div className="w-10 h-10 rounded-lg bg-xifoz-blue/5 flex items-center justify-center mb-3 group-hover:bg-xifoz-blue/10 transition-colors duration-300">
+                <div className="w-10 h-10 rounded-lg bg-xifoz-blue/10 flex items-center justify-center mb-3 group-hover:bg-xifoz-blue/20 transition-colors duration-300">
                   <reason.icon size={20} className="text-xifoz-blue" />
                 </div>
-                <h3 className="text-base font-semibold text-xifoz-text mb-1">{reason.title}</h3>
-                <p className="text-sm text-xifoz-text-secondary leading-relaxed">
+                <h3 className="text-base font-semibold text-xifoz-dark-text mb-1">{reason.title}</h3>
+                <p className="text-sm text-xifoz-dark-text-muted leading-relaxed">
                   {reason.description}
                 </p>
               </div>

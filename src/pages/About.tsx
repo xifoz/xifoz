@@ -67,7 +67,7 @@ function AboutHero() {
   const { ref, isVisible } = useScrollReveal({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-xifoz-base overflow-hidden">
+    <section ref={ref} className="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-xifoz-dark-base overflow-hidden">
       <GridCoverage className="absolute inset-0" opacity={0.25} />
       <Container className="relative z-10">
         <div className="max-w-3xl">
@@ -81,7 +81,7 @@ function AboutHero() {
           </span>
           <h1
             className={cn(
-              'text-4xl md:text-5xl lg:text-6xl font-normal text-xifoz-text tracking-tight mb-6 transition-all duration-700 delay-100',
+              'text-4xl md:text-5xl lg:text-6xl font-normal text-xifoz-dark-text tracking-tight mb-6 transition-all duration-700 delay-100',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
@@ -89,7 +89,7 @@ function AboutHero() {
           </h1>
           <p
             className={cn(
-              'text-lg md:text-xl text-xifoz-text-secondary leading-relaxed transition-all duration-700 delay-200',
+              'text-lg md:text-xl text-xifoz-dark-text-muted leading-relaxed transition-all duration-700 delay-200',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
@@ -113,7 +113,7 @@ function ValuesSection() {
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-blue mb-4 block">
             Our Values
           </span>
-          <h2 className="text-3xl md:text-4xl font-normal text-xifoz-text tracking-tight">
+          <h2 className="text-3xl md:text-4xl font-normal text-xifoz-dark-text tracking-tight">
             Principles that guide everything we do
           </h2>
         </div>
@@ -121,7 +121,7 @@ function ValuesSection() {
           {values.map((value, index) => (
             <div
               key={value.title}
-              className="bg-xifoz-surface border border-xifoz-text/5 rounded-card p-6 md:p-8"
+              className="bg-xifoz-dark-surface border border-xifoz-dark-border rounded-card p-6 md:p-8"
               style={{
                 opacity: isVisible ? 1 : 0,
                 transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
@@ -131,8 +131,8 @@ function ValuesSection() {
               <div className="w-10 h-10 rounded-lg bg-xifoz-blue/5 flex items-center justify-center mb-4">
                 <value.icon size={20} className="text-xifoz-blue" />
               </div>
-              <h3 className="text-base font-semibold text-xifoz-text mb-2">{value.title}</h3>
-              <p className="text-sm text-xifoz-text-secondary leading-relaxed">
+              <h3 className="text-base font-semibold text-xifoz-dark-text mb-2">{value.title}</h3>
+              <p className="text-sm text-xifoz-dark-text-muted leading-relaxed">
                 {value.description}
               </p>
             </div>
@@ -153,7 +153,7 @@ function TimelineSection() {
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-blue mb-4 block">
             Our Journey
           </span>
-          <h2 className="text-3xl md:text-4xl font-normal text-xifoz-text tracking-tight">
+          <h2 className="text-3xl md:text-4xl font-normal text-xifoz-dark-text tracking-tight">
             Milestones along the way
           </h2>
         </div>
@@ -172,11 +172,11 @@ function TimelineSection() {
                 <span className="w-2 h-2 rounded-full bg-xifoz-blue" />
               </div>
               {index < timeline.length - 1 && (
-                <div className="absolute left-[11px] top-6 w-0.5 h-full bg-xifoz-text/10" />
+                <div className="absolute left-[11px] top-6 w-0.5 h-full bg-xifoz-dark-border" />
               )}
               <span className="text-xs font-semibold text-xifoz-blue mb-1 block">{item.year}</span>
-              <h3 className="text-lg font-semibold text-xifoz-text mb-1">{item.title}</h3>
-              <p className="text-sm text-xifoz-text-secondary leading-relaxed">
+              <h3 className="text-lg font-semibold text-xifoz-dark-text mb-1">{item.title}</h3>
+              <p className="text-sm text-xifoz-dark-text-muted leading-relaxed">
                 {item.description}
               </p>
             </div>
@@ -206,10 +206,10 @@ export default function About() {
                   Mission
                 </span>
               </div>
-              <h2 className="text-2xl md:text-3xl font-normal text-xifoz-text tracking-tight mb-4">
+              <h2 className="text-2xl md:text-3xl font-normal text-xifoz-dark-text tracking-tight mb-4">
                 Protect organizations from modern cyber threats
               </h2>
-              <p className="text-base text-xifoz-text-secondary leading-relaxed">
+              <p className="text-base text-xifoz-dark-text-muted leading-relaxed">
                 Through proactive cybersecurity services, intelligent security strategies, and
                 enterprise-grade protection, we help organizations stay resilient in an
                 ever-evolving threat landscape.
@@ -224,10 +224,10 @@ export default function About() {
                   Vision
                 </span>
               </div>
-              <h2 className="text-2xl md:text-3xl font-normal text-xifoz-text tracking-tight mb-4">
+              <h2 className="text-2xl md:text-3xl font-normal text-xifoz-dark-text tracking-tight mb-4">
                 A world where every organization is cyber-resilient
               </h2>
-              <p className="text-base text-xifoz-text-secondary leading-relaxed">
+              <p className="text-base text-xifoz-dark-text-muted leading-relaxed">
                 We envision a future where robust cybersecurity is not a privilege but a standard —
                 where businesses of all sizes can operate with confidence, knowing their digital
                 assets are protected.
@@ -241,13 +241,13 @@ export default function About() {
       <TimelineSection />
 
       {/* CTA */}
-      <section className="py-20 md:py-28 bg-xifoz-base">
+      <section className="py-20 md:py-28 bg-xifoz-dark-base">
         <Container>
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-normal text-xifoz-text tracking-tight mb-4">
+            <h2 className="text-3xl md:text-4xl font-normal text-xifoz-dark-text tracking-tight mb-4">
               Be part of our story
             </h2>
-            <p className="text-base text-xifoz-text-secondary mb-8">
+            <p className="text-base text-xifoz-dark-text-muted mb-8">
               We are at the start of our journey and looking for organizations who want a true
               security partner — not just a vendor.
             </p>

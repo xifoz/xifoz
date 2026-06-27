@@ -6,16 +6,16 @@ export default function Terms() {
   useMeta({ title: 'Terms of Service', description: "Read the XIFOZ terms of service governing use of our website and consulting services.", canonical: '/terms' });
   return (
     <>
-      <section className="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-xifoz-base overflow-hidden">
+      <section className="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-xifoz-dark-base overflow-hidden">
         <GridCoverage className="absolute inset-0" opacity={0.25} />
         <Container className="relative z-10">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-blue mb-4 block">
             Legal
           </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-normal text-xifoz-text tracking-tight mb-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-normal text-xifoz-dark-text tracking-tight mb-6">
             Terms & Conditions
           </h1>
-          <p className="text-lg text-xifoz-text-secondary">
+          <p className="text-lg text-xifoz-dark-text-muted">
             Last updated: December 2024
           </p>
         </Container>

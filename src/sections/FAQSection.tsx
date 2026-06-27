@@ -14,10 +14,10 @@ export function FAQSection() {
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-blue mb-4 block">
               FAQ
             </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal text-xifoz-text tracking-tight mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal text-xifoz-dark-text tracking-tight mb-4">
               Frequently Asked Questions.
             </h2>
-            <p className="text-base text-xifoz-text-secondary">
+            <p className="text-base text-xifoz-dark-text-muted">
               Everything you need to know about our services.
             </p>
           </div>
@@ -25,7 +25,7 @@ export function FAQSection() {
           <FAQAccordion items={homeFAQ} />
 
           <div className="text-center mt-10">
-            <p className="text-sm text-xifoz-text-secondary mb-3">
+            <p className="text-sm text-xifoz-dark-text-muted mb-3">
               Still have questions?
             </p>
             <Link

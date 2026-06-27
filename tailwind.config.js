@@ -51,6 +51,13 @@ module.exports = {
         'xifoz-success': '#16A34A',
         'xifoz-warning': '#D97706',
         'xifoz-danger': '#DC2626',
+        // XIFOZ Dark Enterprise (Redesign Tokens)
+        'xifoz-dark-base': '#050505',
+        'xifoz-dark-surface': '#0a0a0a',
+        'xifoz-dark-dim': '#141414',
+        'xifoz-dark-border': '#262626',
+        'xifoz-dark-text': '#FAFAFA',
+        'xifoz-dark-text-muted': '#A3A3A3',
       },
       fontFamily: {
         sans: ['Geist', 'Inter', 'system-ui', 'sans-serif'],

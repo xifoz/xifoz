@@ -41,7 +41,7 @@ export function Navbar() {
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
           isScrolled
-            ? 'bg-xifoz-base/80 backdrop-blur-xl border-b border-xifoz-text/5'
+            ? 'bg-xifoz-dark-surface/80 backdrop-blur-xl border-b border-xifoz-dark-border'
             : 'bg-transparent'
         )}
       >
@@ -62,7 +62,7 @@ export function Navbar() {
                 <path d="M14 7L8 10.5V17.5L14 21L20 17.5V10.5L14 7Z" stroke="#38BDF8" strokeWidth="1" fill="none" />
                 <circle cx="14" cy="14" r="2" fill="#2563EB" />
               </svg>
-              <span className="text-lg font-semibold tracking-[0.15em] text-xifoz-text">XIFOZ</span>
+              <span className="text-lg font-semibold tracking-[0.15em] text-xifoz-dark-text">XIFOZ</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -74,8 +74,8 @@ export function Navbar() {
                   className={cn(
                     'text-sm font-medium uppercase tracking-[0.08em] transition-colors duration-300 link-underline',
                     location.pathname === link.href
-                      ? 'text-xifoz-blue'
-                      : 'text-xifoz-text-secondary hover:text-xifoz-text'
+                      ? 'text-xifoz-dark-text'
+                      : 'text-xifoz-dark-text-muted hover:text-xifoz-dark-text'
                   )}
                 >
                   {link.label}
@@ -87,7 +87,7 @@ export function Navbar() {
             <div className="hidden lg:block">
               <Link
                 to="/contact"
-                className="inline-flex items-center px-6 py-2.5 text-sm font-medium rounded-pill transition-all duration-300 border border-xifoz-text/15 text-xifoz-text hover:border-xifoz-blue hover:text-xifoz-blue"
+                className="inline-flex items-center px-6 py-2.5 text-sm font-medium rounded-badge transition-all duration-300 border border-xifoz-dark-border text-xifoz-dark-text hover:border-xifoz-blue hover:text-xifoz-blue hover:bg-xifoz-blue/5"
               >
                 Get Protection
               </Link>
@@ -96,7 +96,7 @@ export function Navbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 text-xifoz-text hover:text-xifoz-blue transition-colors"
+              className="lg:hidden p-2 text-xifoz-dark-text hover:text-xifoz-blue transition-colors"
               aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
@@ -115,7 +115,7 @@ export function Navbar() {
         aria-label="Navigation menu"
         aria-hidden={!isMobileMenuOpen}
         className={cn(
-          'fixed inset-0 z-[60] bg-xifoz-base lg:hidden',
+          'fixed inset-0 z-[60] bg-xifoz-dark-base lg:hidden',
           'transition-all duration-300 ease-in-out',
           isMobileMenuOpen
             ? 'translate-x-0 opacity-100 pointer-events-auto'
@@ -131,11 +131,11 @@ export function Navbar() {
                 <path d="M14 7L8 10.5V17.5L14 21L20 17.5V10.5L14 7Z" stroke="#38BDF8" strokeWidth="1" fill="none" />
                 <circle cx="14" cy="14" r="2" fill="#2563EB" />
               </svg>
-              <span className="text-lg font-semibold tracking-[0.15em]">XIFOZ</span>
+              <span className="text-lg font-semibold tracking-[0.15em] text-xifoz-dark-text">XIFOZ</span>
             </Link>
             <button
               onClick={closeMobileMenu}
-              className="p-2 text-xifoz-text hover:text-xifoz-blue transition-colors"
+              className="p-2 text-xifoz-dark-text hover:text-xifoz-blue transition-colors"
               aria-label="Close menu"
             >
               <X size={24} />
@@ -161,7 +161,7 @@ export function Navbar() {
                     'text-2xl font-medium transition-colors duration-300',
                     location.pathname === link.href
                       ? 'text-xifoz-blue'
-                      : 'text-xifoz-text hover:text-xifoz-blue'
+                      : 'text-xifoz-dark-text hover:text-xifoz-blue'
                   )}
                 >
                   {link.label}

@@ -16,10 +16,10 @@ export function CoverageGrid() {
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-blue mb-4 block">
             Our Services
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal text-xifoz-text tracking-tight mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal text-xifoz-dark-text tracking-tight mb-4">
             Comprehensive Coverage
           </h2>
-          <p className="text-base md:text-lg text-xifoz-text-secondary max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-xifoz-dark-text-muted max-w-2xl mx-auto">
             End-to-end cybersecurity services designed to protect every layer of your digital infrastructure.
           </p>
         </div>

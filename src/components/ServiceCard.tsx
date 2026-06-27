@@ -44,16 +44,16 @@ export function ServiceCard({ title, description, icon, className, compact = fal
   return (
     <div
       className={cn(
-        'group bg-xifoz-surface border border-xifoz-text/5 rounded-card p-6 md:p-8 transition-all duration-300 hover:shadow-card hover:-translate-y-1',
+        'group bg-xifoz-dark-surface border border-xifoz-dark-border rounded-card p-6 md:p-8 transition-all duration-300 hover:-translate-y-1 hover:border-xifoz-dark-text/20 hover:bg-xifoz-dark-dim/50',
         className
       )}
     >
-      <div className="w-10 h-10 rounded-lg bg-xifoz-blue/5 flex items-center justify-center mb-4 group-hover:bg-xifoz-blue/10 transition-colors duration-300">
+      <div className="w-10 h-10 rounded-lg bg-xifoz-blue/10 flex items-center justify-center mb-4 group-hover:bg-xifoz-blue/20 transition-colors duration-300">
         <IconComponent size={20} className="text-xifoz-blue" />
       </div>
-      <h3 className="text-base font-semibold text-xifoz-text mb-2">{title}</h3>
+      <h3 className="text-base font-semibold text-xifoz-dark-text mb-2">{title}</h3>
       {!compact && (
-        <p className="text-sm text-xifoz-text-secondary leading-relaxed">{description}</p>
+        <p className="text-sm text-xifoz-dark-text-muted leading-relaxed">{description}</p>
       )}
     </div>
   );

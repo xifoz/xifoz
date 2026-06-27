@@ -32,7 +32,7 @@ export default function Blog() {
   return (
     <>
       {/* Hero */}
-      <section ref={ref} className="relative pt-32 pb-12 md:pt-40 md:pb-16 bg-xifoz-base overflow-hidden">
+      <section ref={ref} className="relative pt-32 pb-12 md:pt-40 md:pb-16 bg-xifoz-dark-base overflow-hidden">
         <GridCoverage className="absolute inset-0" opacity={0.25} />
         <Container className="relative z-10">
           <div className="max-w-3xl">
@@ -46,7 +46,7 @@ export default function Blog() {
             </span>
             <h1
               className={cn(
-                'text-4xl md:text-5xl lg:text-6xl font-normal text-xifoz-text tracking-tight mb-6 transition-all duration-700 delay-100',
+                'text-4xl md:text-5xl lg:text-6xl font-normal text-xifoz-dark-text tracking-tight mb-6 transition-all duration-700 delay-100',
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
               )}
             >
@@ -54,7 +54,7 @@ export default function Blog() {
             </h1>
             <p
               className={cn(
-                'text-lg md:text-xl text-xifoz-text-secondary leading-relaxed transition-all duration-700 delay-200',
+                'text-lg md:text-xl text-xifoz-dark-text-muted leading-relaxed transition-all duration-700 delay-200',
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
               )}
             >
@@ -78,7 +78,7 @@ export default function Blog() {
                     'px-4 py-2 text-sm font-medium rounded-pill transition-all duration-300',
                     activeCategory === category
                       ? 'bg-xifoz-blue text-white'
-                      : 'bg-xifoz-surface text-xifoz-text-secondary hover:text-xifoz-text border border-xifoz-text/5'
+                      : 'bg-xifoz-dark-surface text-xifoz-dark-text-muted hover:text-xifoz-dark-text border border-xifoz-dark-border'
                   )}
                 >
                   {category}
@@ -97,7 +97,7 @@ export default function Blog() {
                 placeholder="Search articles..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 bg-xifoz-surface border border-xifoz-text/5 rounded-pill text-sm text-xifoz-text placeholder:text-xifoz-text-secondary/50 focus:outline-none focus:border-xifoz-blue/30 transition-colors"
+                className="w-full pl-10 pr-4 py-2.5 bg-xifoz-dark-surface border border-xifoz-dark-border rounded-pill text-sm text-xifoz-dark-text placeholder:text-xifoz-dark-text-muted/50 focus:outline-none focus:border-xifoz-blue/30 transition-colors"
               />
             </div>
           </div>
@@ -105,7 +105,7 @@ export default function Blog() {
           {/* Featured Posts */}
           {featuredPosts.length > 0 && activeCategory === 'All' && searchQuery === '' && (
             <div className="mb-10">
-              <h2 className="text-sm font-semibold uppercase tracking-[0.1em] text-xifoz-text mb-5">
+              <h2 className="text-sm font-semibold uppercase tracking-[0.1em] text-xifoz-dark-text mb-5">
                 Featured
               </h2>
               <div className="grid md:grid-cols-2 gap-5 md:gap-6">
@@ -128,7 +128,7 @@ export default function Blog() {
 
           {/* Regular Posts */}
           <div>
-            <h2 className="text-sm font-semibold uppercase tracking-[0.1em] text-xifoz-text mb-5">
+            <h2 className="text-sm font-semibold uppercase tracking-[0.1em] text-xifoz-dark-text mb-5">
               {activeCategory === 'All' && searchQuery === '' ? 'All Articles' : 'Articles'}
             </h2>
             {regularPosts.length > 0 ? (
@@ -148,7 +148,7 @@ export default function Blog() {
               </div>
             ) : (
               <div className="text-center py-16">
-                <p className="text-xifoz-text-secondary">
+                <p className="text-xifoz-dark-text-muted">
                   No articles found matching your criteria.
                 </p>
               </div>

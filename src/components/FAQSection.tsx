@@ -19,12 +19,12 @@ export function FAQSection({ items, className }: FAQSectionProps) {
         <AccordionItem
           key={index}
           value={`item-${index}`}
-          className="bg-xifoz-surface border border-xifoz-text/5 rounded-lg px-5 md:px-6 data-[state=open]:shadow-sm transition-shadow duration-300"
+          className="bg-xifoz-dark-surface border border-xifoz-dark-border rounded-lg px-5 md:px-6 data-[state=open]:shadow-sm transition-shadow duration-300"
         >
-          <AccordionTrigger className="text-left text-sm md:text-base font-medium text-xifoz-text hover:no-underline py-4 md:py-5 [&[data-state=open]>svg]:rotate-180">
+          <AccordionTrigger className="text-left text-sm md:text-base font-medium text-xifoz-dark-text hover:no-underline py-4 md:py-5 [&[data-state=open]>svg]:rotate-180">
             {item.question}
           </AccordionTrigger>
-          <AccordionContent className="text-sm text-xifoz-text-secondary leading-relaxed pb-5">
+          <AccordionContent className="text-sm text-xifoz-dark-text-muted leading-relaxed pb-5">
             {item.answer}
           </AccordionContent>
         </AccordionItem>

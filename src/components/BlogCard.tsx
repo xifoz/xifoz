@@ -55,21 +55,21 @@ export function BlogCard({
           </div>
         </div>
         <div className="space-y-2">
-          <div className="flex items-center gap-3 text-xs text-xifoz-text-secondary">
+          <div className="flex items-center gap-3 text-xs text-xifoz-dark-text-muted">
             <span>{new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
             <span>&middot;</span>
             <span>{readingTime}</span>
           </div>
           <h3
             className={cn(
-              'font-medium text-xifoz-text leading-snug group-hover:text-xifoz-blue transition-colors duration-300',
+              'font-medium text-xifoz-dark-text leading-snug group-hover:text-xifoz-blue transition-colors duration-300',
               featured ? 'text-xl md:text-2xl' : 'text-base'
             )}
           >
             {title}
           </h3>
           {!featured && (
-            <p className="text-sm text-xifoz-text-secondary leading-relaxed line-clamp-2">
+            <p className="text-sm text-xifoz-dark-text-muted leading-relaxed line-clamp-2">
               {excerpt}
             </p>
           )}

@@ -18,7 +18,7 @@ export function MonitoredInfrastructure() {
   const { ref, isVisible } = useScrollReveal({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="relative py-24 md:py-32 bg-xifoz-base overflow-hidden">
+    <section ref={ref} className="relative py-24 md:py-32 bg-xifoz-dark-base overflow-hidden">
       <Container className="relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left - Infrastructure Grid */}
@@ -32,7 +32,7 @@ export function MonitoredInfrastructure() {
               {infrastructureItems.map((item, index) => (
                 <div
                   key={index}
-                  className="bg-xifoz-surface border border-xifoz-text/5 rounded-card p-4 md:p-5 text-center hover:border-xifoz-blue/20 transition-colors duration-300"
+                  className="bg-xifoz-dark-surface border border-xifoz-dark-border rounded-card p-4 md:p-5 text-center hover:border-xifoz-blue/20 transition-colors duration-300"
                   style={{
                     opacity: isVisible ? 1 : 0,
                     transform: isVisible ? 'scale(1)' : 'scale(0.85)',
@@ -42,7 +42,7 @@ export function MonitoredInfrastructure() {
                   <div className="w-8 h-8 mx-auto mb-2 rounded-lg bg-xifoz-blue/5 flex items-center justify-center">
                     <item.icon size={16} className="text-xifoz-blue" />
                   </div>
-                  <p className="text-xs font-medium text-xifoz-text mb-1">{item.label}</p>
+                  <p className="text-xs font-medium text-xifoz-dark-text mb-1">{item.label}</p>
                   <div className="flex items-center justify-center gap-1.5">
                     <span
                       className={cn(
@@ -50,7 +50,7 @@ export function MonitoredInfrastructure() {
                         item.status === 'secure' ? 'bg-xifoz-success' : 'bg-xifoz-cyan'
                       )}
                     />
-                    <span className="text-[10px] text-xifoz-text-secondary capitalize">
+                    <span className="text-[10px] text-xifoz-dark-text-muted capitalize">
                       {item.status}
                     </span>
                   </div>
@@ -69,10 +69,10 @@ export function MonitoredInfrastructure() {
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-blue mb-4 block">
               Monitoring
             </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal text-xifoz-text tracking-tight mb-6">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal text-xifoz-dark-text tracking-tight mb-6">
               We monitor your code and infrastructure so you do not have to.
             </h2>
-            <p className="text-base md:text-lg text-xifoz-text-secondary leading-relaxed mb-8">
+            <p className="text-base md:text-lg text-xifoz-dark-text-muted leading-relaxed mb-8">
               From dependency vulnerabilities to runtime exploits, XIFOZ integrates directly into your CI/CD pipeline. Continuous monitoring ensures threats are caught before they reach production.
             </p>
             <div className="flex flex-wrap gap-4">
@@ -80,7 +80,7 @@ export function MonitoredInfrastructure() {
                 (feature) => (
                   <span
                     key={feature}
-                    className="px-4 py-2 bg-xifoz-dim rounded-pill text-xs font-medium text-xifoz-text-secondary"
+                    className="px-4 py-2 bg-xifoz-dark-dim rounded-pill text-xs font-medium text-xifoz-dark-text-muted"
                   >
                     {feature}
                   </span>

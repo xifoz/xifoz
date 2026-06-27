@@ -1,32 +1,34 @@
 import { Link } from 'react-router-dom';
 import { Container } from './Container';
+import { Button } from './Button';
 import { footerLinks } from '@/data/navigation';
 import { Separator } from '@/components/ui/separator';
 import { ArrowUpRight, Linkedin, Twitter } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="bg-xifoz-base border-t border-xifoz-text/5">
+    <footer className="bg-xifoz-dark-base border-t border-xifoz-dark-border">
       {/* Large CTA */}
       <Container className="py-24 md:py-32">
         <div className="max-w-2xl">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-normal text-xifoz-text leading-tight tracking-tight mb-6">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-normal text-xifoz-dark-text leading-tight tracking-tight mb-6">
             Ready to get started?
           </h2>
-          <p className="text-lg text-xifoz-text-secondary mb-8 leading-relaxed">
+          <p className="text-lg text-xifoz-dark-text-muted mb-8 leading-relaxed">
             Protect your organization with proactive cybersecurity solutions. Book a free consultation and discover how XIFOZ can strengthen your security posture.
           </p>
-          <Link
+          <Button
             to="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-xifoz-blue text-white rounded-pill font-medium text-base hover:bg-blue-700 transition-colors duration-300"
+            size="lg"
+            className="mt-2"
           >
             Book a Free Consultation
-            <ArrowUpRight size={18} />
-          </Link>
+            <ArrowUpRight size={18} className="ml-2" />
+          </Button>
         </div>
       </Container>
 
-      <Separator className="bg-xifoz-text/5" />
+      <Separator className="bg-xifoz-dark-border" />
 
       {/* Links Grid */}
       <Container className="py-16">
@@ -39,16 +41,16 @@ export function Footer() {
                 <path d="M14 7L8 10.5V17.5L14 21L20 17.5V10.5L14 7Z" stroke="#38BDF8" strokeWidth="1" fill="none" />
                 <circle cx="14" cy="14" r="2" fill="#2563EB" />
               </svg>
-              <span className="text-base font-semibold tracking-[0.15em]">XIFOZ</span>
+              <span className="text-base font-semibold tracking-[0.15em] text-xifoz-dark-text">XIFOZ</span>
             </Link>
-            <p className="text-sm text-xifoz-text-secondary leading-relaxed">
+            <p className="text-sm text-xifoz-dark-text-muted leading-relaxed">
               Protecting organizations from modern cyber threats through proactive cybersecurity services.
             </p>
           </div>
 
           {/* Services */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-[0.12em] text-xifoz-text mb-4">
+            <h4 className="text-xs font-semibold uppercase tracking-[0.12em] text-xifoz-dark-text mb-4">
               Services
             </h4>
             <ul className="space-y-3">
@@ -56,7 +58,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     to={link.href}
-                    className="text-sm text-xifoz-text-secondary hover:text-xifoz-text transition-colors duration-300"
+                    className="text-sm text-xifoz-dark-text-muted hover:text-xifoz-dark-text transition-colors duration-300"
                   >
                     {link.label}
                   </Link>
@@ -67,7 +69,7 @@ export function Footer() {
 
           {/* Company */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-[0.12em] text-xifoz-text mb-4">
+            <h4 className="text-xs font-semibold uppercase tracking-[0.12em] text-xifoz-dark-text mb-4">
               Company
             </h4>
             <ul className="space-y-3">
@@ -75,7 +77,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     to={link.href}
-                    className="text-sm text-xifoz-text-secondary hover:text-xifoz-text transition-colors duration-300"
+                    className="text-sm text-xifoz-dark-text-muted hover:text-xifoz-dark-text transition-colors duration-300"
                   >
                     {link.label}
                   </Link>
@@ -86,7 +88,7 @@ export function Footer() {
 
           {/* Legal */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-[0.12em] text-xifoz-text mb-4">
+            <h4 className="text-xs font-semibold uppercase tracking-[0.12em] text-xifoz-dark-text mb-4">
               Legal
             </h4>
             <ul className="space-y-3">
@@ -94,7 +96,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     to={link.href}
-                    className="text-sm text-xifoz-text-secondary hover:text-xifoz-text transition-colors duration-300"
+                    className="text-sm text-xifoz-dark-text-muted hover:text-xifoz-dark-text transition-colors duration-300"
                   >
                     {link.label}
                   </Link>
@@ -105,12 +107,12 @@ export function Footer() {
         </div>
       </Container>
 
-      <Separator className="bg-xifoz-text/5" />
+      <Separator className="bg-xifoz-dark-border" />
 
       {/* Bottom */}
       <Container className="py-6">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-xifoz-text-secondary">
+          <p className="text-sm text-xifoz-dark-text-muted">
             &copy; {new Date().getFullYear()} XIFOZ. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
@@ -118,7 +120,7 @@ export function Footer() {
               href="https://linkedin.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 text-xifoz-text-secondary hover:text-xifoz-blue transition-colors"
+              className="p-2 text-xifoz-dark-text-muted hover:text-xifoz-blue transition-colors"
               aria-label="LinkedIn"
             >
               <Linkedin size={18} />
@@ -127,7 +129,7 @@ export function Footer() {
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 text-xifoz-text-secondary hover:text-xifoz-blue transition-colors"
+              className="p-2 text-xifoz-dark-text-muted hover:text-xifoz-blue transition-colors"
               aria-label="Twitter"
             >
               <Twitter size={18} />

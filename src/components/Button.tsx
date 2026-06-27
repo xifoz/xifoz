@@ -26,20 +26,20 @@ export function Button({
   disabled = false,
 }: ButtonProps) {
   const baseClasses =
-    'inline-flex items-center justify-center font-medium transition-all duration-300 rounded-pill tracking-wide';
+    'inline-flex items-center justify-center font-medium transition-all duration-300 rounded-badge tracking-wide';
 
   const variantClasses = {
-    primary: 'bg-xifoz-blue text-white hover:bg-blue-700 shadow-sm hover:shadow-md',
-    secondary: 'bg-xifoz-structural text-xifoz-text-inverse hover:bg-gray-800 shadow-sm',
+    primary: 'bg-xifoz-blue text-white hover:bg-blue-600 shadow-sm hover:shadow-[0_0_20px_rgba(37,99,235,0.3)] border border-transparent transition-all duration-300',
+    secondary: 'bg-xifoz-dark-dim text-xifoz-dark-text border border-xifoz-dark-border hover:bg-xifoz-dark-surface hover:border-xifoz-dark-text/20 shadow-sm transition-all duration-300',
     outline:
-      'bg-transparent border border-xifoz-text/20 text-xifoz-text hover:border-xifoz-blue hover:text-xifoz-blue',
-    ghost: 'bg-transparent text-xifoz-text hover:bg-xifoz-text/5',
+      'bg-transparent border border-xifoz-dark-border text-xifoz-dark-text hover:border-xifoz-dark-text/30 hover:bg-xifoz-dark-surface transition-all duration-300',
+    ghost: 'bg-transparent text-xifoz-dark-text-muted hover:bg-xifoz-dark-dim hover:text-xifoz-dark-text transition-all duration-300',
   };
 
   const sizeClasses = {
-    sm: 'px-5 py-2 text-sm',
-    md: 'px-7 py-3 text-sm',
-    lg: 'px-10 py-4 text-base',
+    sm: 'px-4 py-2 text-sm',
+    md: 'px-6 py-2.5 text-sm',
+    lg: 'px-8 py-3.5 text-base',
   };
 
   const disabledClasses = disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer';
