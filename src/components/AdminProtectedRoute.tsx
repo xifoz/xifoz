@@ -14,7 +14,7 @@ export function AdminProtectedRoute({
   if (loading) {
     return (
       <div className="min-h-screen bg-xifoz-base flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-xifoz-blue border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-10 h-10 border-4 border-xifoz-border border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }

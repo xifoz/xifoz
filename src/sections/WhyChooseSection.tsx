@@ -1,38 +1,33 @@
 import { Container } from '@/components/Container';
 import { SectionWrapper } from '@/components/SectionWrapper';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { Shield, Clock, Users, Target, Zap, Award } from 'lucide-react';
+import { Shield, Target, Award, ScanSearch } from 'lucide-react';
 
 const reasons = [
   {
     icon: Shield,
-    title: 'Proactive Defense',
-    description: 'We identify and neutralize threats before they become breaches, not after.',
+    title: 'Trust Before Revenue',
+    description: 'We build lasting relationships through integrity and reliability.',
   },
   {
-    icon: Clock,
-    title: '24/7 Monitoring',
-    description: 'Round-the-clock security operations ensuring continuous protection.',
-  },
-  {
-    icon: Users,
-    title: 'Expert Team',
-    description: 'Certified security professionals with deep industry experience.',
-  },
-  {
-    icon: Target,
-    title: 'Tailored Solutions',
-    description: 'Security strategies customized to your specific business needs.',
-  },
-  {
-    icon: Zap,
-    title: 'Rapid Response',
-    description: 'Swift incident response to minimize impact and recovery time.',
+    icon: Shield,
+    title: 'Prevention Before Recovery',
+    description: 'We focus on stopping threats before they impact your business.',
   },
   {
     icon: Award,
-    title: 'Compliance Ready',
-    description: 'Meet regulatory requirements with confidence and documentation.',
+    title: 'Excellence Without Compromise',
+    description: 'We deliver the highest quality in everything we do.',
+  },
+  {
+    icon: ScanSearch,
+    title: 'Transparency by Default',
+    description: 'Clear communication. No jargon. No hidden agendas.',
+  },
+  {
+    icon: Target,
+    title: 'Continuous Improvement',
+    description: 'We evolve with emerging threats to keep you always protected.',
   },
 ];
 
@@ -42,43 +37,27 @@ export function WhyChooseSection() {
   return (
     <SectionWrapper background="base">
       <Container>
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-          {/* Left - Sticky header */}
-          <div className="lg:sticky lg:top-32">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-blue mb-4 block">
-              Why XIFOZ
-            </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal text-xifoz-dark-text tracking-tight mb-6">
-              Why organizations trust us with their security?
-            </h2>
-            <p className="text-base md:text-lg text-xifoz-dark-text-muted leading-relaxed">
-              We combine technical expertise with business understanding to deliver security solutions that protect without hindering growth.
-            </p>
-          </div>
-
-          {/* Right - Reasons grid */}
-          <div ref={ref} className="grid sm:grid-cols-2 gap-6">
+          <div ref={ref} className="grid grid-cols-1 md:grid-cols-5 gap-6 mt-12 w-full">
             {reasons.map((reason, index) => (
               <div
                 key={reason.title}
-                className="group"
+                className="group bg-white border border-xifoz-border rounded-card p-6 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1 h-full flex flex-col"
                 style={{
                   opacity: isVisible ? 1 : 0,
                   transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
                   transition: `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`,
                 }}
               >
-                <div className="w-10 h-10 rounded-lg bg-xifoz-blue/10 flex items-center justify-center mb-3 group-hover:bg-xifoz-blue/20 transition-colors duration-300">
-                  <reason.icon size={20} className="text-xifoz-blue" />
+                <div className="w-10 h-10 mb-4 transition-colors duration-300">
+                  <reason.icon size={24} className="text-xifoz-accent" strokeWidth={1.5} />
                 </div>
-                <h3 className="text-base font-semibold text-xifoz-dark-text mb-1">{reason.title}</h3>
-                <p className="text-sm text-xifoz-dark-text-muted leading-relaxed">
+                <h3 className="text-base font-semibold text-xifoz-text mb-2">{reason.title}</h3>
+                <p className="text-sm text-xifoz-text-secondary leading-relaxed flex-grow">
                   {reason.description}
                 </p>
               </div>
             ))}
           </div>
-        </div>
       </Container>
     </SectionWrapper>
   );

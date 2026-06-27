@@ -36,7 +36,7 @@ function validateConfig(): AppConfig {
     port: parseInt(process.env['PORT'] ?? '4000', 10),
     nodeEnv: process.env['NODE_ENV'] ?? 'development',
     databaseUrl: requireEnv('DATABASE_URL'),
-    corsOrigin: requireEnv('CORS_ORIGIN'),
+    corsOrigin: requireEnv('CORS_ORIGIN').split(',').map(origin => origin.trim()),
     bcryptRounds: parseInt(process.env['BCRYPT_ROUNDS'] ?? '12', 10),
     mfaEncryptionKey: requireEnv('MFA_ENCRYPTION_KEY'),
     jwt: {

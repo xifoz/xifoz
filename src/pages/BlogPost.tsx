@@ -9,18 +9,18 @@ import { useMeta } from '@/hooks/useMeta';
 function renderMarkdown(content: string): string {
   let html = content
     // Headers
-    .replace(/^## (.*$)/gim, '<h2 class="text-2xl md:text-3xl font-normal text-xifoz-dark-text tracking-tight mt-12 mb-4">$1</h2>')
-    .replace(/^### (.*$)/gim, '<h3 class="text-xl font-semibold text-xifoz-dark-text mt-8 mb-3">$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2 class="text-2xl md:text-3xl font-normal text-xifoz-text tracking-tight mt-12 mb-4">$1</h2>')
+    .replace(/^### (.*$)/gim, '<h3 class="text-xl font-semibold text-xifoz-text mt-8 mb-3">$1</h3>')
     // Bold
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     // Code
-    .replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 bg-xifoz-dark-dim rounded text-sm font-mono text-xifoz-blue">$1</code>')
+    .replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 bg-xifoz-dim rounded text-sm font-mono text-xifoz-accent">$1</code>')
     // Bullet lists
-    .replace(/^- (.*$)/gim, '<li class="flex items-start gap-3 mb-2"><span class="mt-2 w-1.5 h-1.5 rounded-full bg-xifoz-blue flex-shrink-0"></span><span class="text-xifoz-dark-text-muted leading-relaxed">$1</span></li>')
+    .replace(/^- (.*$)/gim, '<li class="flex items-start gap-3 mb-2"><span class="mt-2 w-1.5 h-1.5 rounded-full bg-xifoz-text flex-shrink-0"></span><span class="text-xifoz-text-secondary leading-relaxed">$1</span></li>')
     // Numbered lists
-    .replace(/^\d+\. (.*$)/gim, '<li class="flex items-start gap-3 mb-2"><span class="text-xifoz-blue font-medium flex-shrink-0 mt-0.5">$&</span></li>')
+    .replace(/^\d+\. (.*$)/gim, '<li class="flex items-start gap-3 mb-2"><span class="text-xifoz-accent font-medium flex-shrink-0 mt-0.5">$&</span></li>')
     // Paragraphs (must be last)
-    .replace(/^(?!<[hl]|<li|<div|<p|<code)(.*$)/gim, '<p class="text-base text-xifoz-dark-text-muted leading-relaxed mb-4">$1</p>');
+    .replace(/^(?!<[hl]|<li|<div|<p|<code)(.*$)/gim, '<p class="text-base text-xifoz-text-secondary leading-relaxed mb-4">$1</p>');
 
   // Wrap consecutive li elements in ul
   html = html.replace(/(<li[^>]*>.*?<\/li>\n?)+/gs, '<ul class="mb-6">$&</ul>');
@@ -48,8 +48,8 @@ export default function BlogPost() {
     return (
       <Container className="pt-32 pb-16">
         <div className="text-center">
-          <h1 className="text-2xl font-semibold text-xifoz-dark-text mb-4">Article not found</h1>
-          <Link to="/blog" className="text-xifoz-blue hover:underline">
+          <h1 className="text-2xl font-semibold text-xifoz-text mb-4">Article not found</h1>
+          <Link to="/blog" className="text-xifoz-accent hover:underline">
             Back to Blog
           </Link>
         </div>
@@ -97,8 +97,8 @@ export default function BlogPost() {
           alt={post.title}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-xifoz-dark-base via-xifoz-dark-base/20 to-transparent" />
-        <div className="absolute inset-0 bg-xifoz-dark-surface/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-xifoz-base via-xifoz-base/20 to-transparent" />
+        <div className="absolute inset-0 bg-white/30" />
       </div>
 
       {/* Article Content */}
@@ -107,21 +107,21 @@ export default function BlogPost() {
           {/* Back Link */}
           <button
             onClick={() => navigate('/blog')}
-            className="inline-flex items-center gap-2 text-sm text-xifoz-dark-text-muted hover:text-xifoz-dark-text transition-colors mb-6"
+            className="inline-flex items-center gap-2 text-sm text-xifoz-text-secondary hover:text-xifoz-text transition-colors mb-6"
           >
             <ArrowLeft size={16} />
             Back to Blog
           </button>
 
           {/* Article Header */}
-          <div className="bg-xifoz-dark-surface rounded-card p-6 md:p-10 border border-xifoz-dark-border mb-8">
+          <div className="bg-white rounded-card p-6 md:p-10 border border-xifoz-border mb-8">
             <Badge variant="cyan" className="mb-4">
               {post.category}
             </Badge>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-normal text-xifoz-dark-text tracking-tight mb-6">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-normal text-xifoz-text tracking-tight mb-6">
               {post.title}
             </h1>
-            <div className="flex flex-wrap items-center gap-4 text-sm text-xifoz-dark-text-muted">
+            <div className="flex flex-wrap items-center gap-4 text-sm text-xifoz-text-secondary">
               <div className="flex items-center gap-1.5">
                 <User size={14} />
                 <span>{post.author}</span>
@@ -151,7 +151,7 @@ export default function BlogPost() {
                     navigator.clipboard.writeText(window.location.href);
                   }
                 }}
-                className="flex items-center gap-1.5 hover:text-xifoz-blue transition-colors ml-auto"
+                className="flex items-center gap-1.5 hover:text-xifoz-accent transition-colors ml-auto"
               >
                 <Share2 size={14} />
                 <span>Share</span>
@@ -167,8 +167,8 @@ export default function BlogPost() {
 
           {/* Related Posts */}
           {relatedPosts.length > 0 && (
-            <div className="mt-16 pt-10 border-t border-xifoz-dark-border">
-              <h2 className="text-xl font-semibold text-xifoz-dark-text mb-6">
+            <div className="mt-16 pt-10 border-t border-xifoz-border">
+              <h2 className="text-xl font-semibold text-xifoz-text mb-6">
                 Related Articles
               </h2>
               <div className="grid sm:grid-cols-3 gap-5">
@@ -186,7 +186,7 @@ export default function BlogPost() {
                         loading="lazy"
                       />
                     </div>
-                    <h3 className="text-sm font-medium text-xifoz-dark-text group-hover:text-xifoz-blue transition-colors line-clamp-2">
+                    <h3 className="text-sm font-medium text-xifoz-text group-hover:text-xifoz-accent transition-colors line-clamp-2">
                       {related.title}
                     </h3>
                   </Link>

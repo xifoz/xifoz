@@ -51,13 +51,13 @@ function ContactHero() {
   const { ref, isVisible } = useScrollReveal({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-xifoz-dark-base overflow-hidden">
+    <section ref={ref} className="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-xifoz-base overflow-hidden">
       <GridCoverage className="absolute inset-0" opacity={0.25} />
       <Container className="relative z-10">
         <div className="max-w-3xl">
           <span
             className={cn(
-              'text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-blue mb-4 block transition-all duration-700',
+              'text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-accent mb-4 block transition-all duration-700',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
@@ -65,7 +65,7 @@ function ContactHero() {
           </span>
           <h1
             className={cn(
-              'text-4xl md:text-5xl lg:text-6xl font-normal text-xifoz-dark-text tracking-tight mb-6 transition-all duration-700 delay-100',
+              'text-4xl md:text-5xl lg:text-6xl font-normal text-xifoz-text tracking-tight mb-6 transition-all duration-700 delay-100',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
@@ -73,7 +73,7 @@ function ContactHero() {
           </h1>
           <p
             className={cn(
-              'text-lg md:text-xl text-xifoz-dark-text-muted leading-relaxed transition-all duration-700 delay-200',
+              'text-lg md:text-xl text-xifoz-text-secondary leading-relaxed transition-all duration-700 delay-200',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
@@ -156,22 +156,22 @@ function ContactForm() {
 
   if (submitted) {
     return (
-      <div className="bg-xifoz-dark-surface border border-xifoz-dark-border rounded-card p-8 md:p-12 text-center">
+      <div className="bg-white border border-xifoz-border rounded-card p-8 md:p-12 text-center">
         <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-xifoz-success/10 flex items-center justify-center">
           <CheckCircle className="w-8 h-8 text-xifoz-success" />
         </div>
-        <h3 className="text-xl font-semibold text-xifoz-dark-text mb-2">Message sent</h3>
-        <p className="text-sm text-xifoz-dark-text-muted whitespace-pre-line">{"Thank you for contacting XIFOZ.\n\nYour inquiry has been received successfully. Our team will review your request and respond within one business day."}</p>
+        <h3 className="text-xl font-semibold text-xifoz-text mb-2">Message sent</h3>
+        <p className="text-sm text-xifoz-text-secondary whitespace-pre-line">{"Thank you for contacting XIFOZ.\n\nYour inquiry has been received successfully. Our team will review your request and respond within one business day."}</p>
       </div>
     );
   }
 
   const inputClass = (field: keyof FormErrors) =>
     cn(
-      'w-full px-4 py-3 bg-xifoz-dark-base border rounded-lg text-sm text-xifoz-dark-text placeholder:text-xifoz-dark-text-muted/40 focus:outline-none transition-colors',
+      'w-full px-4 py-3 bg-xifoz-base border rounded-lg text-sm text-xifoz-text placeholder:text-xifoz-text-secondary/40 focus:outline-none transition-colors',
       errors[field]
         ? 'border-red-500/50 focus:border-red-500/70'
-        : 'border-xifoz-dark-border focus:border-xifoz-blue/30'
+        : 'border-xifoz-border focus:border-xifoz-border/30'
     );
 
   return (
@@ -185,7 +185,7 @@ function ContactForm() {
 
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-xifoz-dark-text mb-2">
+          <label htmlFor="name" className="block text-sm font-medium text-xifoz-text mb-2">
             Full Name <span aria-hidden="true" className="text-red-400">*</span>
           </label>
           <input
@@ -208,7 +208,7 @@ function ContactForm() {
           )}
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-xifoz-dark-text mb-2">
+          <label htmlFor="email" className="block text-sm font-medium text-xifoz-text mb-2">
             Email Address <span aria-hidden="true" className="text-red-400">*</span>
           </label>
           <input
@@ -234,7 +234,7 @@ function ContactForm() {
 
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-xifoz-dark-text mb-2">
+          <label htmlFor="phone" className="block text-sm font-medium text-xifoz-text mb-2">
             Phone Number <span aria-hidden="true" className="text-red-400">*</span>
           </label>
           <input
@@ -257,7 +257,7 @@ function ContactForm() {
           )}
         </div>
         <div>
-          <label htmlFor="company" className="block text-sm font-medium text-xifoz-dark-text mb-2">
+          <label htmlFor="company" className="block text-sm font-medium text-xifoz-text mb-2">
             Company
           </label>
           <input
@@ -275,7 +275,7 @@ function ContactForm() {
 
       <div className="grid sm:grid-cols-2 gap-5">
         <div>
-          <label htmlFor="service" className="block text-sm font-medium text-xifoz-dark-text mb-2">
+          <label htmlFor="service" className="block text-sm font-medium text-xifoz-text mb-2">
             Service Interested In
           </label>
           <select
@@ -283,7 +283,7 @@ function ContactForm() {
             name="service"
             value={formData.service}
             onChange={handleChange}
-            className="w-full px-4 py-3 bg-xifoz-dark-base border border-xifoz-dark-border rounded-lg text-sm text-xifoz-dark-text focus:outline-none focus:border-xifoz-blue/30 transition-colors appearance-none cursor-pointer"
+            className="w-full px-4 py-3 bg-xifoz-base border border-xifoz-border rounded-lg text-sm text-xifoz-text focus:outline-none focus:border-xifoz-border/30 transition-colors appearance-none cursor-pointer"
           >
             <option value="">Select a service</option>
             <option value="Penetration Testing">Penetration Testing</option>
@@ -299,7 +299,7 @@ function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-xifoz-dark-text mb-2">
+        <label htmlFor="message" className="block text-sm font-medium text-xifoz-text mb-2">
           Message <span aria-hidden="true" className="text-red-400">*</span>
         </label>
         <textarea
@@ -343,14 +343,14 @@ export default function Contact() {
         <Container>
           <div className="grid lg:grid-cols-5 gap-10 lg:gap-16">
             <div className="lg:col-span-3">
-              <h2 className="text-2xl font-normal text-xifoz-dark-text tracking-tight mb-6">
+              <h2 className="text-2xl font-normal text-xifoz-text tracking-tight mb-6">
                 Send us a message
               </h2>
               <ContactForm />
             </div>
 
             <div className="lg:col-span-2">
-              <h2 className="text-2xl font-normal text-xifoz-dark-text tracking-tight mb-6">
+              <h2 className="text-2xl font-normal text-xifoz-text tracking-tight mb-6">
                 Contact information
               </h2>
               <div className="space-y-6">
@@ -359,7 +359,7 @@ export default function Contact() {
                     icon: Mail,
                     label: 'Email',
                     content: (
-                      <a href="mailto:support@xifoz.com" className="text-sm text-xifoz-dark-text-muted hover:text-xifoz-blue transition-colors">
+                      <a href="mailto:support@xifoz.com" className="text-sm text-xifoz-text-secondary hover:text-xifoz-accent transition-colors">
                         support@xifoz.com
                       </a>
                     ),
@@ -368,7 +368,7 @@ export default function Contact() {
                     icon: Phone,
                     label: 'Phone',
                     content: (
-                      <a href="tel:+917999994828" className="text-sm text-xifoz-dark-text-muted hover:text-xifoz-blue transition-colors">
+                      <a href="tel:+917999994828" className="text-sm text-xifoz-text-secondary hover:text-xifoz-accent transition-colors">
                         +91 7999994828
                       </a>
                     ),
@@ -377,7 +377,7 @@ export default function Contact() {
                     icon: MapPin,
                     label: 'Office',
                     content: (
-                      <p className="text-sm text-xifoz-dark-text-muted">
+                      <p className="text-sm text-xifoz-text-secondary">
                         Gurugram, Haryana 122002<br />
                         India
                       </p>
@@ -387,7 +387,7 @@ export default function Contact() {
                     icon: Clock,
                     label: 'Business Hours',
                     content: (
-                      <p className="text-sm text-xifoz-dark-text-muted">
+                      <p className="text-sm text-xifoz-text-secondary">
                         Monday — Friday: 9:00 AM - 6:00 PM IST<br />
                         24/7 Incident Response Available
                       </p>
@@ -395,11 +395,11 @@ export default function Contact() {
                   },
                 ].map(({ icon: Icon, label, content }) => (
                   <div key={label} className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-xifoz-blue/5 flex items-center justify-center flex-shrink-0">
-                      <Icon size={18} className="text-xifoz-blue" />
+                    <div className="w-10 h-10 rounded-lg bg-xifoz-dim flex items-center justify-center flex-shrink-0">
+                      <Icon size={18} className="text-xifoz-accent" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-xifoz-dark-text mb-1">{label}</p>
+                      <p className="text-sm font-medium text-xifoz-text mb-1">{label}</p>
                       {content}
                     </div>
                   </div>
@@ -414,10 +414,10 @@ export default function Contact() {
         <Container>
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-normal text-xifoz-dark-text tracking-tight mb-4">
+              <h2 className="text-3xl md:text-4xl font-normal text-xifoz-text tracking-tight mb-4">
                 Common questions
               </h2>
-              <p className="text-base text-xifoz-dark-text-muted">
+              <p className="text-base text-xifoz-text-secondary">
                 Quick answers to frequently asked questions about contacting us.
               </p>
             </div>

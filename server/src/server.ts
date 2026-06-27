@@ -38,7 +38,17 @@ app.use(
 // CORS
 app.use(
   cors({
-    origin: config.corsOrigin,
+    origin: (origin, callback) => {
+      const allowed = Array.isArray(config.corsOrigin)
+        ? config.corsOrigin
+        : String(config.corsOrigin).split(",").map(o => o.trim());
+
+      if (!origin || allowed.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`Origin ${origin} not allowed by CORS`));
+    },
     methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,

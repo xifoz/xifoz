@@ -18,8 +18,8 @@ const metrics = [
     value: '99.97%',
     label: 'Uptime SLA',
     description: 'Security monitoring availability',
-    accent: 'text-xifoz-blue',
-    bg: 'bg-xifoz-blue/10',
+    accent: 'text-xifoz-accent',
+    bg: 'bg-xifoz-dim',
   },
   {
     icon: RefreshCw,
@@ -34,8 +34,8 @@ const metrics = [
     value: 'Zero Trust',
     label: 'Access Model',
     description: 'Every request verified explicitly',
-    accent: 'text-xifoz-blue',
-    bg: 'bg-xifoz-blue/10',
+    accent: 'text-xifoz-accent',
+    bg: 'bg-xifoz-dim',
   },
 ];
 
@@ -52,10 +52,10 @@ export function SystemicResilience() {
   return (
     <section
       ref={ref}
-      className="relative py-24 md:py-32 bg-xifoz-dark-surface overflow-hidden"
+      className="relative py-24 md:py-32 bg-white overflow-hidden"
     >
       <GridCoverage className="absolute inset-0" opacity={0.15} />
-      <div className="absolute inset-0 bg-gradient-to-b from-xifoz-dark-surface via-transparent to-xifoz-dark-surface" />
+      <div className="absolute inset-0 bg-gradient-to-b from-bg-white via-transparent to-bg-white" />
 
       <Container className="relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -69,11 +69,11 @@ export function SystemicResilience() {
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-cyan mb-4 block">
               Infrastructure
             </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal text-xifoz-dark-text tracking-tight mb-6">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-normal text-xifoz-text tracking-tight mb-6">
               Resilience is a system,{' '}
               <span className="text-xifoz-cyan">not a feature.</span>
             </h2>
-            <p className="text-base md:text-lg text-xifoz-dark-text-muted leading-relaxed mb-8">
+            <p className="text-base md:text-lg text-xifoz-text-secondary leading-relaxed mb-8">
               We architect environments where failure is anticipated, contained, and automatically
               remediated. Our infrastructure-as-code approach ensures your security posture scales
               with your business.
@@ -82,7 +82,7 @@ export function SystemicResilience() {
               {pillars.map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-xifoz-cyan flex-shrink-0" />
-                  <span className="text-sm text-xifoz-dark-text-muted">{item}</span>
+                  <span className="text-sm text-xifoz-text-secondary">{item}</span>
                 </li>
               ))}
             </ul>
@@ -113,10 +113,10 @@ export function SystemicResilience() {
                   <p className={cn('text-xl md:text-2xl font-semibold mb-1', metric.accent)}>
                     {metric.value}
                   </p>
-                  <p className="text-sm font-medium text-xifoz-dark-text mb-1">
+                  <p className="text-sm font-medium text-xifoz-text mb-1">
                     {metric.label}
                   </p>
-                  <p className="text-xs text-xifoz-dark-text-muted leading-relaxed">
+                  <p className="text-xs text-xifoz-text-secondary leading-relaxed">
                     {metric.description}
                   </p>
                 </div>

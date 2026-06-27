@@ -20,10 +20,10 @@ export function SectionWrapper({
   const { ref, isVisible } = useScrollReveal({ threshold: 0.05, rootMargin: '0px 0px -50px 0px' });
 
   const bgClasses = {
-    base: 'bg-xifoz-dark-base',
-    surface: 'bg-xifoz-dark-surface',
-    dim: 'bg-xifoz-dark-dim',
-    structural: 'bg-xifoz-dark-surface border-t border-xifoz-dark-border',
+    base: 'bg-xifoz-base',
+    surface: 'bg-white',
+    dim: 'bg-xifoz-dim',
+    structural: 'bg-white border-t border-xifoz-border',
   };
 
   const paddingClasses = {

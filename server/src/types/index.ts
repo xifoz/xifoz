@@ -17,7 +17,7 @@ export interface AppConfig {
   port: number;
   nodeEnv: string;
   databaseUrl: string;
-  corsOrigin: string;
+  corsOrigin: string[];
   bcryptRounds: number;
   mfaEncryptionKey: string;
   jwt: {

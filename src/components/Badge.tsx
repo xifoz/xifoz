@@ -9,9 +9,9 @@ interface BadgeProps {
 
 export function Badge({ children, variant = 'secondary', className }: BadgeProps) {
   const variantClasses = {
-    primary: 'bg-xifoz-blue/20 text-xifoz-blue border border-xifoz-blue/30',
-    secondary: 'bg-xifoz-dark-dim text-xifoz-dark-text-muted border border-xifoz-dark-border',
-    outline: 'border border-xifoz-dark-border text-xifoz-dark-text-muted',
+    primary: 'bg-xifoz-dim text-xifoz-accent border border-xifoz-border/30',
+    secondary: 'bg-xifoz-dim text-xifoz-text-secondary border border-xifoz-border',
+    outline: 'border border-xifoz-border text-xifoz-text-secondary',
     cyan: 'bg-xifoz-cyan/20 text-xifoz-cyan border border-xifoz-cyan/30',
   };
 

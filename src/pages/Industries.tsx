@@ -12,13 +12,13 @@ function IndustriesHero() {
   const { ref, isVisible } = useScrollReveal({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-xifoz-dark-base overflow-hidden">
+    <section ref={ref} className="relative pt-32 pb-16 md:pt-40 md:pb-24 bg-xifoz-base overflow-hidden">
       <GridCoverage className="absolute inset-0" opacity={0.25} />
       <Container className="relative z-10">
         <div className="max-w-3xl">
           <span
             className={cn(
-              'text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-blue mb-4 block transition-all duration-700',
+              'text-xs font-semibold uppercase tracking-[0.2em] text-xifoz-accent mb-4 block transition-all duration-700',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
@@ -26,7 +26,7 @@ function IndustriesHero() {
           </span>
           <h1
             className={cn(
-              'text-4xl md:text-5xl lg:text-6xl font-normal text-xifoz-dark-text tracking-tight mb-6 transition-all duration-700 delay-100',
+              'text-4xl md:text-5xl lg:text-6xl font-normal text-xifoz-text tracking-tight mb-6 transition-all duration-700 delay-100',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
@@ -34,7 +34,7 @@ function IndustriesHero() {
           </h1>
           <p
             className={cn(
-              'text-lg md:text-xl text-xifoz-dark-text-muted leading-relaxed transition-all duration-700 delay-200',
+              'text-lg md:text-xl text-xifoz-text-secondary leading-relaxed transition-all duration-700 delay-200',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             )}
           >
@@ -54,8 +54,8 @@ function IndustryDetail({ industry, index }: { industry: typeof industries[0]; i
     <div
       ref={ref}
       className={cn(
-        'py-12 md:py-16 border-b border-xifoz-dark-border last:border-b-0',
-        isEven ? 'bg-xifoz-dark-base' : 'bg-xifoz-dark-dim'
+        'py-12 md:py-16 border-b border-xifoz-border last:border-b-0',
+        isEven ? 'bg-xifoz-base' : 'bg-xifoz-dim'
       )}
     >
       <Container>
@@ -80,36 +80,36 @@ function IndustryDetail({ industry, index }: { industry: typeof industries[0]; i
 
           {/* Content */}
           <div className={!isEven ? 'lg:order-1' : ''}>
-            <h2 className="text-2xl md:text-3xl font-normal text-xifoz-dark-text tracking-tight mb-4">
+            <h2 className="text-2xl md:text-3xl font-normal text-xifoz-text tracking-tight mb-4">
               {industry.title}
             </h2>
-            <p className="text-base text-xifoz-dark-text-muted leading-relaxed mb-8">
+            <p className="text-base text-xifoz-text-secondary leading-relaxed mb-8">
               {industry.description}
             </p>
 
             <div className="grid sm:grid-cols-2 gap-6">
               <div>
-                <h3 className="text-sm font-semibold uppercase tracking-[0.1em] text-xifoz-dark-text mb-3">
+                <h3 className="text-sm font-semibold uppercase tracking-[0.1em] text-xifoz-text mb-3">
                   Key Challenges
                 </h3>
                 <ul className="space-y-2">
                   {industry.challenges.map((challenge) => (
                     <li key={challenge} className="flex items-start gap-2">
                       <span className="mt-1.5 w-1 h-1 rounded-full bg-xifoz-danger flex-shrink-0" />
-                      <span className="text-sm text-xifoz-dark-text-muted">{challenge}</span>
+                      <span className="text-sm text-xifoz-text-secondary">{challenge}</span>
                     </li>
                   ))}
                 </ul>
               </div>
               <div>
-                <h3 className="text-sm font-semibold uppercase tracking-[0.1em] text-xifoz-dark-text mb-3">
+                <h3 className="text-sm font-semibold uppercase tracking-[0.1em] text-xifoz-text mb-3">
                   Our Solutions
                 </h3>
                 <ul className="space-y-2">
                   {industry.solutions.map((solution) => (
                     <li key={solution} className="flex items-start gap-2">
                       <span className="mt-1.5 w-1 h-1 rounded-full bg-xifoz-success flex-shrink-0" />
-                      <span className="text-sm text-xifoz-dark-text-muted">{solution}</span>
+                      <span className="text-sm text-xifoz-text-secondary">{solution}</span>
                     </li>
                   ))}
                 </ul>
@@ -164,13 +164,13 @@ export default function Industries() {
       ))}
 
       {/* CTA */}
-      <section className="py-20 md:py-28 bg-xifoz-dark-base">
+      <section className="py-20 md:py-28 bg-xifoz-base">
         <Container>
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-normal text-xifoz-dark-text tracking-tight mb-4">
+            <h2 className="text-3xl md:text-4xl font-normal text-xifoz-text tracking-tight mb-4">
               Need a tailored security solution?
             </h2>
-            <p className="text-base text-xifoz-dark-text-muted mb-8">
+            <p className="text-base text-xifoz-text-secondary mb-8">
               We customize our services to meet the unique requirements of your industry. Let us discuss your specific needs.
             </p>
             <Button to="/contact" size="lg">
