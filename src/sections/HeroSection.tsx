@@ -14,16 +14,16 @@ export function HeroSection() {
         isVisible ? "opacity-100" : "opacity-0"
       )}
     >
-      <div className="absolute inset-0 md:inset-y-0 md:right-[-8%] md:left-[35%] lg:left-[45%] flex items-start md:items-center justify-end md:justify-start pointer-events-none z-0 md:z-[1] opacity-[0.12] md:opacity-100 overflow-hidden md:overflow-visible">
+      <div className="absolute inset-0 md:inset-y-0 md:right-[-8%] md:left-0 lg:left-[6%] flex items-start md:items-center justify-start md:justify-start pointer-events-none z-0 md:z-[1] opacity-[0.12] md:opacity-90 overflow-hidden md:overflow-visible">
         <img 
           src="/images/hero-map.png" 
           alt="Global Threat Monitoring" 
-          className="w-[180%] md:w-[125%] h-auto md:h-auto object-contain object-right-top md:object-left mask-image-fade max-w-none relative right-[-20%] md:right-auto"
+          className="w-[180%] md:w-[125%] h-auto md:h-auto object-contain object-left md:object-left mask-image-fade max-w-none relative translate-x-[-6%]md:right-auto"
         />
       </div>
 
       <Container className="relative z-10 w-full h-full flex flex-col md:flex-row justify-center md:justify-start items-center pt-24 md:pt-0 pb-12 md:pb-0">
-        <div className="w-full md:max-w-2xl lg:max-w-3xl relative z-20">
+        <div className="w-full md:max-w-2xl lg:max-w-[680px] relative z-20">
           <div className="text-[10px] font-semibold tracking-[0.22em] uppercase text-xifoz-text-secondary mb-6 md:mb-8">
             Enterprise Cybersecurity Consulting
           </div>
